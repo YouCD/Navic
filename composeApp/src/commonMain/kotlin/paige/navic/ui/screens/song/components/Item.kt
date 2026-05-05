@@ -32,6 +32,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import navic.composeapp.generated.resources.Res
 import navic.composeapp.generated.resources.action_add_to_queue
+import navic.composeapp.generated.resources.action_play_next
 import navic.composeapp.generated.resources.info_download_failed
 import navic.composeapp.generated.resources.info_downloaded
 import navic.composeapp.generated.resources.info_unknown_album
@@ -48,6 +49,7 @@ import paige.navic.icons.Icons
 import paige.navic.icons.outlined.Check
 import paige.navic.icons.outlined.DownloadOff
 import paige.navic.icons.outlined.Queue
+import paige.navic.icons.outlined.QueuePlayNext
 import paige.navic.ui.components.common.CoverArt
 import paige.navic.ui.components.common.MarqueeText
 import paige.navic.ui.components.sheets.SongSheet
@@ -84,10 +86,9 @@ fun SongListScreenItem(
 		modifier = modifier,
 		state = dismissState,
 		onDismiss = {
-			if (it == SwipeToDismissBoxValue.EndToStart) onAddToQueue()
-			scope.launch {
-				dismissState.reset()
-			}
+			if (it == SwipeToDismissBoxValue.StartToEnd) onAddToQueue()
+			if (it == SwipeToDismissBoxValue.EndToStart) onPlayNext()
+			scope.launch { dismissState.reset() }
 		},
 		backgroundContent = {
 			Box(
@@ -98,15 +99,25 @@ fun SongListScreenItem(
 					.padding(horizontal = 20.dp),
 				contentAlignment = Alignment.CenterEnd
 			) {
-				Icon(
-					imageVector = Icons.Outlined.Queue,
-					contentDescription = stringResource(Res.string.action_add_to_queue),
-					tint = MaterialTheme.colorScheme.onPrimaryContainer,
-					modifier = Modifier.align(when (dismissState.dismissDirection) {
-						SwipeToDismissBoxValue.StartToEnd -> Alignment.CenterStart
-						else -> Alignment.CenterEnd
-					})
-				)
+				when (dismissState.dismissDirection) {
+					SwipeToDismissBoxValue.StartToEnd -> {
+						Icon(
+							imageVector = Icons.Outlined.Queue,
+							contentDescription = stringResource(Res.string.action_add_to_queue),
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
+							modifier = Modifier.align(Alignment.CenterStart)
+						)
+					}
+					SwipeToDismissBoxValue.EndToStart -> {
+						Icon(
+							imageVector = Icons.Outlined.QueuePlayNext,
+							contentDescription = stringResource(Res.string.action_play_next),
+							tint = MaterialTheme.colorScheme.onPrimaryContainer,
+							modifier = Modifier.align(Alignment.CenterEnd)
+						)
+					}
+					else -> {}
+				}
 			}
 		}
 	) {
