@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.appendInlineContent
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -31,15 +32,21 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 import navic.composeapp.generated.resources.Res
 import navic.composeapp.generated.resources.action_add_to_queue
+import navic.composeapp.generated.resources.info_download_failed
+import navic.composeapp.generated.resources.info_downloaded
 import navic.composeapp.generated.resources.info_unknown_album
 import navic.composeapp.generated.resources.info_unknown_year
 import org.jetbrains.compose.resources.stringResource
 import paige.navic.LocalNavStack
+import paige.navic.data.database.entities.DownloadEntity
+import paige.navic.data.database.entities.DownloadStatus
 import paige.navic.data.models.Screen
 import paige.navic.data.models.settings.Settings
 import paige.navic.domain.models.DomainExplicitStatus
 import paige.navic.domain.models.DomainSong
 import paige.navic.icons.Icons
+import paige.navic.icons.outlined.Check
+import paige.navic.icons.outlined.DownloadOff
 import paige.navic.icons.outlined.Queue
 import paige.navic.ui.components.common.CoverArt
 import paige.navic.ui.components.common.MarqueeText
@@ -62,7 +69,11 @@ fun SongListScreenItem(
 	onPlayNext: () -> Unit,
 	onAddToQueue: () -> Unit,
 	onClick: () -> Unit,
-	onSetRating: (Int) -> Unit
+	onSetRating: (Int) -> Unit,
+	download: DownloadEntity?,
+	onDownload: () -> Unit,
+	onCancelDownload: () -> Unit,
+	onDeleteDownload: () -> Unit,
 ) {
 	val backStack = LocalNavStack.current
 	val dismissState = rememberSwipeToDismissBoxState()
@@ -133,6 +144,36 @@ fun SongListScreenItem(
 						modifier = Modifier.size(50.dp),
 						shape = ContinuousRoundedRectangle((Settings.shared.artGridRounding / 1.75f).dp)
 					)
+				},
+				trailingContent = {
+					if (download != null) {
+						when (download.status) {
+							DownloadStatus.DOWNLOADING -> {
+								CircularProgressIndicator(
+									progress = { download.progress },
+									modifier = Modifier.size(16.dp),
+									strokeWidth = 2.dp
+								)
+							}
+							DownloadStatus.DOWNLOADED -> {
+								Icon(
+									Icons.Outlined.Check,
+									contentDescription = stringResource(Res.string.info_downloaded),
+									modifier = Modifier.size(16.dp),
+									tint = MaterialTheme.colorScheme.primary
+								)
+							}
+							DownloadStatus.FAILED -> {
+								Icon(
+									Icons.Outlined.DownloadOff,
+									contentDescription = stringResource(Res.string.info_download_failed),
+									modifier = Modifier.size(16.dp),
+									tint = MaterialTheme.colorScheme.error
+								)
+							}
+							else -> {}
+						}
+					}
 				}
 			)
 			if (selected) {
@@ -161,7 +202,11 @@ fun SongListScreenItem(
 					onAddToPlaylist = {
 						playlistDialogShown = true
 					},
-					onSetRating = onSetRating
+					onSetRating = onSetRating,
+					downloadStatus = download?.status ?: DownloadStatus.NOT_DOWNLOADED,
+					onDownload = onDownload,
+					onCancelDownload = onCancelDownload,
+					onDeleteDownload = onDeleteDownload,
 				)
 			}
 		}
