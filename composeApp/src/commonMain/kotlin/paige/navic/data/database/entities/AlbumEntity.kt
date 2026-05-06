@@ -1,13 +1,13 @@
 package paige.navic.data.database.entities
 
 import androidx.room3.Entity
-import androidx.room3.PrimaryKey
 import kotlin.time.Duration
 import kotlin.time.Instant
 
-@Entity
+@Entity(primaryKeys = ["serverId", "albumId"])
 data class AlbumEntity(
-	@PrimaryKey val albumId: String,
+	val serverId: String,
+	val albumId: String,
 	val name: String,
 	val artistName: String,
 	val artistId: String,
