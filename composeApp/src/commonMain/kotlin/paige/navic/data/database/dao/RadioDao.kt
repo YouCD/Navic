@@ -17,28 +17,28 @@ interface RadioDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertRadios(radios: List<RadioEntity>)
 
-	@Query("SELECT * FROM RadioEntity ORDER BY name ASC")
-	suspend fun getRadios(): List<RadioEntity>
+	@Query("SELECT * FROM RadioEntity WHERE serverId = :serverId ORDER BY name ASC")
+	suspend fun getRadios(serverId: String): List<RadioEntity>
 
-	@Query("SELECT * FROM RadioEntity ORDER BY name ASC")
-	fun getRadiosFlow(): Flow<List<RadioEntity>>
+	@Query("SELECT * FROM RadioEntity WHERE serverId = :serverId ORDER BY name ASC")
+	fun getRadiosFlow(serverId: String): Flow<List<RadioEntity>>
 
-	@Query("DELETE FROM RadioEntity WHERE radioId = :radioId")
-	suspend fun deleteRadio(radioId: String)
+	@Query("DELETE FROM RadioEntity WHERE radioId = :radioId AND serverId = :serverId")
+	suspend fun deleteRadio(radioId: String, serverId: String)
 
-	@Query("DELETE FROM RadioEntity")
-	suspend fun clearAllRadios()
+	@Query("DELETE FROM RadioEntity WHERE serverId = :serverId")
+	suspend fun clearRadiosForServer(serverId: String)
 
-	@Query("SELECT radioId FROM RadioEntity")
-	suspend fun getAllRadioIds(): List<String>
+	@Query("SELECT radioId FROM RadioEntity WHERE serverId = :serverId")
+	suspend fun getAllRadioIds(serverId: String): List<String>
 
 	@Transaction
-	suspend fun updateAllRadios(remoteRadios: List<RadioEntity>) {
+	suspend fun updateAllRadios(serverId: String, remoteRadios: List<RadioEntity>) {
 		val remoteIds = remoteRadios.map { it.radioId }.toSet()
-		getAllRadioIds().forEach { localId ->
+
+		getAllRadioIds(serverId).forEach { localId ->
 			if (localId !in remoteIds) {
-				Logger.w("RadioDao", "Radio $localId no longer exists remotely")
-				deleteRadio(localId)
+				deleteRadio(localId, serverId)
 			}
 		}
 		insertRadios(remoteRadios)

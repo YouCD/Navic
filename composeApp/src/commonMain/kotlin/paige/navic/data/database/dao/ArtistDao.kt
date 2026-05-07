@@ -11,29 +11,29 @@ import paige.navic.shared.Logger
 
 @Dao
 interface ArtistDao {
-	@Query("SELECT * FROM ArtistEntity ORDER BY name COLLATE NOCASE ASC")
-	suspend fun getArtistsAlphabeticalByName(): List<ArtistEntity>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId ORDER BY name COLLATE NOCASE ASC")
+	suspend fun getArtistsAlphabeticalByName(serverId: String): List<ArtistEntity>
 
-	@Query("SELECT * FROM ArtistEntity ORDER BY RANDOM()")
-	suspend fun getArtistsRandom(): List<ArtistEntity>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId ORDER BY RANDOM()")
+	suspend fun getArtistsRandom(serverId: String): List<ArtistEntity>
 
-	@Query("SELECT * FROM ArtistEntity WHERE starredAt IS NOT NULL ORDER BY starredAt DESC")
-	suspend fun getArtistsStarred(): List<ArtistEntity>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId AND starredAt IS NOT NULL ORDER BY starredAt DESC")
+	suspend fun getArtistsStarred(serverId: String): List<ArtistEntity>
 
-	@Query("SELECT * FROM ArtistEntity ORDER BY name COLLATE NOCASE ASC")
-	fun getAllArtists(): Flow<List<ArtistEntity>>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId ORDER BY name COLLATE NOCASE ASC")
+	fun getAllArtists(serverId: String): Flow<List<ArtistEntity>>
 
-	@Query("SELECT * FROM ArtistEntity")
-	suspend fun getAllArtistsList(): List<ArtistEntity>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId")
+	suspend fun getAllArtistsList(serverId: String): List<ArtistEntity>
 
-	@Query("SELECT * FROM ArtistEntity WHERE artistId = :artistId LIMIT 1")
-	suspend fun getArtistById(artistId: String): ArtistEntity?
+	@Query("SELECT * FROM ArtistEntity WHERE artistId = :artistId AND serverId = :serverId LIMIT 1")
+	suspend fun getArtistById(artistId: String, serverId: String): ArtistEntity?
 
-	@Query("SELECT EXISTS(SELECT 1 FROM ArtistEntity WHERE artistId = :artistId AND starredAt IS NOT NULL)")
-	suspend fun isArtistStarred(artistId: String): Boolean
+	@Query("SELECT EXISTS(SELECT 1 FROM ArtistEntity WHERE artistId = :artistId AND serverId = :serverId AND starredAt IS NOT NULL)")
+	suspend fun isArtistStarred(artistId: String, serverId: String): Boolean
 
-	@Query("SELECT * FROM ArtistEntity WHERE name LIKE '%' || :query || '%' COLLATE NOCASE")
-	suspend fun searchArtistsList(query: String): List<ArtistEntity>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId AND name LIKE '%' || :query || '%' COLLATE NOCASE")
+	suspend fun searchArtistsList(query: String, serverId: String): List<ArtistEntity>
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insertArtist(artist: ArtistEntity)
@@ -44,25 +44,25 @@ interface ArtistDao {
 	@Insert(onConflict = OnConflictStrategy.IGNORE)
 	suspend fun insertArtistsIgnoringConflicts(artists: List<ArtistEntity>)
 
-	@Query("DELETE FROM ArtistEntity WHERE artistId = :artistId")
-	suspend fun deleteArtist(artistId: String)
+	@Query("DELETE FROM ArtistEntity WHERE artistId = :artistId AND serverId = :serverId")
+	suspend fun deleteArtist(artistId: String, serverId: String)
 
-	@Query("DELETE FROM ArtistEntity")
-	suspend fun clearAllArtists()
+	@Query("DELETE FROM ArtistEntity WHERE serverId = :serverId")
+	suspend fun clearAllArtistsForServer(serverId: String)
 
-	@Query("SELECT artistId FROM ArtistEntity")
-	suspend fun getAllArtistIds(): List<String>
+	@Query("SELECT artistId FROM ArtistEntity WHERE serverId = :serverId")
+	suspend fun getAllArtistIds(serverId: String): List<String>
 
-	@Query("SELECT * FROM ArtistEntity WHERE artistId IN (:ids)")
-	suspend fun getArtistsByIds(ids: List<String>): List<ArtistEntity>
+	@Query("SELECT * FROM ArtistEntity WHERE serverId = :serverId AND artistId IN (:ids)")
+	suspend fun getArtistsByIds(ids: List<String>, serverId: String): List<ArtistEntity>
 
 	@Transaction
-	suspend fun updateAllArtists(remoteArtists: List<ArtistEntity>) {
+	suspend fun updateAllArtists(serverId: String, remoteArtists: List<ArtistEntity>) {
 		val remoteIds = remoteArtists.map { it.artistId }.toSet()
-		getAllArtistIds().forEach { localId ->
+		getAllArtistIds(serverId).forEach { localId ->
 			if (localId !in remoteIds) {
 				Logger.w("ArtistDao", "artist $localId no longer exists remotely")
-				deleteArtist(localId)
+				deleteArtist(localId, serverId)
 			}
 		}
 		insertArtists(remoteArtists)
