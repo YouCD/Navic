@@ -137,7 +137,7 @@ fun QueueScreen() {
 		draggableItemsIndexed(
 			state = draggableState,
 			items = queue,
-			key = { _, song -> song.id }
+			key = { index, _ -> index }
 		) { index, song, isDragging ->
 			QueueScreenItem(
 				index = index,
