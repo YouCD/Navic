@@ -1,6 +1,7 @@
 package paige.navic.ui.screens.queue
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -98,77 +99,80 @@ fun QueueScreen() {
 		queue.size
 	)
 
-	LazyColumn(
+	Column(
 		modifier = Modifier
-			.padding(horizontal = 12.dp)
 			.fillMaxSize()
-			.clip(ContinuousRoundedRectangle(topStart = 16.dp, topEnd = 16.dp)),
-		state = draggableState.listState,
-		verticalArrangement = if (queue.isNotEmpty())
-			Arrangement.spacedBy(ListItemDefaults.SegmentedGap)
-		else Arrangement.Center
+			.clip(ContinuousRoundedRectangle(topStart = 16.dp, topEnd = 16.dp))
 	) {
 		if (queue.isNotEmpty()) {
-			item(key = "queue_header") {
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(horizontal = 12.dp, vertical = 8.dp),
-					horizontalArrangement = Arrangement.SpaceBetween,
-					verticalAlignment = Alignment.CenterVertically
-				) {
-					Text(
-						text = "$songsText • $totalDurationText",
-						style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-						color = MaterialTheme.colorScheme.onSurfaceVariant
-					)
-					TextButton(
-						onClick = {
-							haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-							player.clearQueue()
-						}
-					) {
-						Text(stringResource(Res.string.action_clear_queue))
+			Row(
+				modifier = Modifier
+					.fillMaxWidth()
+					.padding(horizontal = 24.dp, vertical = 8.dp),
+				horizontalArrangement = Arrangement.SpaceBetween,
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Text(
+					text = "$songsText • $totalDurationText",
+					style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+					color = MaterialTheme.colorScheme.onSurfaceVariant
+				)
+				TextButton(
+					onClick = {
+						haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+						player.clearQueue()
 					}
+				) {
+					Text(stringResource(Res.string.action_clear_queue))
 				}
 			}
 		}
 
-		draggableItemsIndexed(
-			state = draggableState,
-			items = queue,
-			key = { index, _ -> index }
-		) { index, song, isDragging ->
-			QueueScreenItem(
-				index = index,
-				count = queue.count(),
-				song = song,
-				isPlaying = playerState.currentIndex == index
-					&& !playerState.isPaused,
-				isSelected = playerState.currentIndex == index,
-				isDragging = isDragging,
-				draggableState = draggableState,
-				onClick = {
-					ctx.clickSound()
-					if (playerState.currentIndex != index) {
-						player.playAt(index)
-						backStack.remove(Screen.Queue)
-					}
-				},
-				onRemove = {
-					haptic.performHapticFeedback(HapticFeedbackType.LongPress)
-					player.removeFromQueue(index)
-				},
-				isOffline = !isOnline,
-				isDownloaded = downloadedSongs.containsKey(song.id)
-			)
-		}
-		if (queue.isEmpty()) {
-			item {
-				ContentUnavailable(
-					icon = Icons.Outlined.PlaylistRemove,
-					label = stringResource(Res.string.info_no_queue)
+		LazyColumn(
+			modifier = Modifier
+				.padding(horizontal = 12.dp)
+				.fillMaxSize(),
+			state = draggableState.listState,
+			verticalArrangement = if (queue.isNotEmpty())
+				Arrangement.spacedBy(ListItemDefaults.SegmentedGap)
+			else Arrangement.Center
+		) {
+			draggableItemsIndexed(
+				state = draggableState,
+				items = queue,
+				key = { index, _ -> index }
+			) { index, song, isDragging ->
+				QueueScreenItem(
+					index = index,
+					count = queue.count(),
+					song = song,
+					isPlaying = playerState.currentIndex == index
+						&& !playerState.isPaused,
+					isSelected = playerState.currentIndex == index,
+					isDragging = isDragging,
+					draggableState = draggableState,
+					onClick = {
+						ctx.clickSound()
+						if (playerState.currentIndex != index) {
+							player.playAt(index)
+							backStack.remove(Screen.Queue)
+						}
+					},
+					onRemove = {
+						haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+						player.removeFromQueue(index)
+					},
+					isOffline = !isOnline,
+					isDownloaded = downloadedSongs.containsKey(song.id)
 				)
+			}
+			if (queue.isEmpty()) {
+				item {
+					ContentUnavailable(
+						icon = Icons.Outlined.PlaylistRemove,
+						label = stringResource(Res.string.info_no_queue)
+					)
+				}
 			}
 		}
 	}
