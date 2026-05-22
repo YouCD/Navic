@@ -33,6 +33,7 @@ import navic.composeapp.generated.resources.action_delete
 import navic.composeapp.generated.resources.action_new
 import navic.composeapp.generated.resources.option_custom_headers
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import paige.navic.LocalCtx
 import paige.navic.data.models.settings.Settings
 import paige.navic.data.session.SessionManager
@@ -55,6 +56,7 @@ private data class Header(
 @Composable
 fun SettingsCustomHeadersScreen() {
 	val ctx = LocalCtx.current
+	val sessionManager = koinInject<SessionManager>()
 
 	val headers = remember {
 		Settings.shared.customHeaders.lines()
@@ -72,7 +74,7 @@ fun SettingsCustomHeadersScreen() {
 		Settings.shared.customHeaders = headers
 			.filter { !hiddenHeaders.contains(it.id) }
 			.joinToString("\n") { "${it.key}:${it.value}" }
-		SessionManager.refreshClient()
+		sessionManager.refreshClient()
 	}
 
 	Scaffold(

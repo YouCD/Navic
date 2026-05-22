@@ -123,8 +123,9 @@ fun App() {
 	}
 
 	val ctx = rememberCtx()
+	val sessionManager = koinInject<SessionManager>()
 	val backStack = rememberNavBackStack(
-		config, if (SessionManager.currentUser != null) {
+		config, if (sessionManager.currentUser != null) {
 			Screen.Library()
 		} else {
 			Screen.Login

@@ -69,6 +69,7 @@ class PlaybackService : MediaSessionService(), KoinComponent {
 	private val connectivityManager: ConnectivityManager by inject()
 
 	private val syncManager: SyncManager by inject()
+	private val sessionManager: SessionManager by inject()
 
 	@OptIn(UnstableApi::class)
 	override fun onCreate() {
@@ -125,7 +126,7 @@ class PlaybackService : MediaSessionService(), KoinComponent {
 			}
 
 		scrobbleManager =
-			AndroidScrobbleManager(player, serviceScope, connectivityManager, syncManager)
+			AndroidScrobbleManager(player, serviceScope, connectivityManager, syncManager, sessionManager)
 
 		val sessionIntent = applicationContext.packageManager
 			.getLaunchIntentForPackage(applicationContext.packageName)
@@ -181,7 +182,8 @@ class AndroidMediaPlayerViewModel(
 	stateRepository: PlayerStateRepository,
 	private val albumDao: AlbumDao,
 	downloadManager: DownloadManager,
-	connectivityManager: ConnectivityManager
+	connectivityManager: ConnectivityManager,
+	private val sessionManager: SessionManager
 ) : MediaPlayerViewModel(
 	stateRepository = stateRepository,
 	downloadManager = downloadManager,
@@ -218,7 +220,7 @@ class AndroidMediaPlayerViewModel(
 		}
 		val container = if (isCellular) Settings.shared.streamingQualityCellular.containerAndroid else Settings.shared.streamingQualityWifi.containerAndroid
 
-		return SessionManager.api.getStreamUrl(id, bitrate, container)
+		return sessionManager.api.getStreamUrl(id, bitrate, container)
 			.toUri()
 			.buildUpon()
 			.appendQueryParameter("estimateContentLength", "true")
@@ -257,7 +259,7 @@ class AndroidMediaPlayerViewModel(
 								putExtra(
 									"artUrl",
 									_uiState.value.currentSong?.coverArtId?.let {
-										SessionManager.getCoverArtUrl(it)
+										sessionManager.getCoverArtUrl(it)
 									})
 							}
 
@@ -780,7 +782,7 @@ class AndroidMediaPlayerViewModel(
 			.setArtist(artistName)
 			.setAlbumTitle(albumTitle)
 			.setArtworkUri(
-				coverArtId?.let { SessionManager.getCoverArtUrl(it).toUri() }
+				coverArtId?.let { sessionManager.getCoverArtUrl(it).toUri() }
 			)
 			.build()
 

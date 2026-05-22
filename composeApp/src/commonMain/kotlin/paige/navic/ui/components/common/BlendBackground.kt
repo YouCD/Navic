@@ -28,6 +28,7 @@ import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
+import org.koin.compose.koinInject
 import paige.navic.data.images.getStaticImageLoader
 import paige.navic.data.session.SessionManager
 import kotlin.time.TimeSource
@@ -52,9 +53,10 @@ fun BlendBackground(
 		getStaticImageLoader(platformContext)
 	}
 
+	val sessionManager = koinInject<SessionManager>()
 	val model = remember(coverArtId) {
 		ImageRequest.Builder(platformContext)
-			.data(coverArtId?.let { SessionManager.getCoverArtUrl(it) })
+			.data(coverArtId?.let { sessionManager.getCoverArtUrl(it) })
 			.memoryCacheKey(coverArtId?.let { "${it}_static" })
 			.diskCacheKey(coverArtId)
 			.diskCachePolicy(CachePolicy.ENABLED)

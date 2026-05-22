@@ -49,7 +49,8 @@ class DownloadManager(
 	private val storageManager: StorageManager,
 	private val lyricRepository: LyricRepository,
 	private val lyricDao: LyricDao,
-	private val scope: CoroutineScope
+	private val scope: CoroutineScope,
+	private val sessionManager: SessionManager
 ) {
 	private val client = HttpClient {
 		val customHeaders = Settings.shared.customHeadersMap()
@@ -280,7 +281,7 @@ class DownloadManager(
 		if (coverId == null) return
 
 		Logger.i("DownloadManager", "caching cover art for $coverId")
-		val coverArtUrl = SessionManager.getCoverArtUrl(coverId)
+		val coverArtUrl = sessionManager.getCoverArtUrl(coverId)
 
 		val imageRequest = ImageRequest.Builder(platformContext)
 			.data(coverArtUrl)
@@ -336,7 +337,7 @@ class DownloadManager(
 		var lastProgress = 0f
 		var progressJob: Job? = null
 
-		val request = client.prepareRequest(SessionManager.api.getStreamUrl(song.id)) {
+		val request = client.prepareRequest(sessionManager.api.getStreamUrl(song.id)) {
 			method = HttpMethod.Get
 			onDownload { bytesSentTotal, contentLength ->
 				if (contentLength != null && contentLength > 0L) {

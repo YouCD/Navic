@@ -35,6 +35,7 @@ import coil3.request.crossfade
 import navic.composeapp.generated.resources.Res
 import navic.composeapp.generated.resources.info_image_failed_to_load
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import paige.navic.data.models.settings.Settings
 import paige.navic.data.session.SessionManager
 import paige.navic.icons.Icons
@@ -57,12 +58,13 @@ fun CoverArt(
 ) {
 	val platformContext = LocalPlatformContext.current
 	val customHeaders = Settings.shared.customHeaders
+	val sessionManager = koinInject<SessionManager>()
 	val model = remember(coverArtId, customHeaders) {
 		val networkHeaders = NetworkHeaders.Builder().apply {
 			Settings.shared.customHeadersMap().forEach { (key, value) -> add(key, value) }
 		}.build()
 		ImageRequest.Builder(platformContext)
-			.data(coverArtId?.let { SessionManager.getCoverArtUrl(it) })
+			.data(coverArtId?.let { sessionManager.getCoverArtUrl(it) })
 			.memoryCacheKey(coverArtId)
 			.diskCacheKey(coverArtId)
 			.diskCachePolicy(CachePolicy.ENABLED)

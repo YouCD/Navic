@@ -22,7 +22,8 @@ import paige.navic.utils.UiState
 class ArtistListViewModel(
 	initialListType: DomainArtistListType = DomainArtistListType.AlphabeticalByName,
 	private val repository: ArtistRepository,
-	private val albumDao: AlbumDao
+	private val albumDao: AlbumDao,
+	private val sessionManager: SessionManager
 ) : ViewModel() {
 	private val _artistsState =
 		MutableStateFlow<UiState<ImmutableList<DomainArtist>>>(UiState.Loading())
@@ -44,7 +45,7 @@ class ArtistListViewModel(
 
 	init {
 		viewModelScope.launch {
-			SessionManager.isLoggedIn.collect { if (it) refreshArtists(false) }
+			sessionManager.isLoggedIn.collect { if (it) refreshArtists(false) }
 		}
 	}
 

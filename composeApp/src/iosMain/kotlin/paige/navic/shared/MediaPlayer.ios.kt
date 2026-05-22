@@ -69,7 +69,8 @@ class IOSMediaPlayerViewModel(
 	stateRepository: PlayerStateRepository,
 	downloadManager: DownloadManager,
 	connectivityManager: ConnectivityManager,
-	syncManager: SyncManager
+	syncManager: SyncManager,
+	private val sessionManager: SessionManager
 ) : MediaPlayerViewModel(
 	stateRepository = stateRepository,
 	downloadManager = downloadManager,
@@ -79,7 +80,7 @@ class IOSMediaPlayerViewModel(
 	private var timeObserver: Any? = null
 	private var playbackEndObserver: Any? = null
 	private val scrobbleManager =
-		IOSScrobbleManager(player, viewModelScope, connectivityManager, syncManager)
+		IOSScrobbleManager(player, viewModelScope, connectivityManager, syncManager, sessionManager)
 	private var pendingSyncState: PlayerUiState? = null
 	private var isTransitioningBetweenTracks = false
 
@@ -483,7 +484,7 @@ class IOSMediaPlayerViewModel(
 			requestHandler = { _ ->
 				runCatching {
 					val url = song.coverArtId
-						?.let { SessionManager.getCoverArtUrl(it) }
+						?.let { sessionManager.getCoverArtUrl(it) }
 						?.let { NSURL.URLWithString(it) } ?: return@runCatching null
 
 					val request = NSMutableURLRequest.requestWithURL(url).apply {
@@ -557,13 +558,13 @@ class IOSMediaPlayerViewModel(
 
 	private fun getStreamUrl(id: String) =
 		when (connectivityManager.isCellular.value) {
-			true -> SessionManager.api.getStreamUrl(
+			true -> sessionManager.api.getStreamUrl(
 				id,
 				if(Settings.shared.isAdvancedTranscodingActive) Settings.shared.customMaxBitrateCellular else Settings.shared.streamingQualityCellular.bitrateIos,
 				Settings.shared.streamingQualityCellular.containerIos
 			)
 
-			false -> SessionManager.api.getStreamUrl(
+			false -> sessionManager.api.getStreamUrl(
 				id,
 				if(Settings.shared.isAdvancedTranscodingActive) Settings.shared.customMaxBitrateWifi else Settings.shared.streamingQualityWifi.bitrateIos,
 				Settings.shared.streamingQualityWifi.containerIos

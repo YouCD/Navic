@@ -102,9 +102,10 @@ fun MiniPlayer(
 	val song = playerState.currentSong
 
 	val platformContext = LocalPlatformContext.current
+	val sessionManager = koinInject<SessionManager>()
 	val model = remember(song?.coverArtId) {
 		ImageRequest.Builder(platformContext)
-			.data(song?.coverArtId?.let { SessionManager.getCoverArtUrl(it) })
+			.data(song?.coverArtId?.let { sessionManager.getCoverArtUrl(it) })
 			.memoryCacheKey(song?.coverArtId)
 			.diskCacheKey(song?.coverArtId)
 			.diskCachePolicy(CachePolicy.ENABLED)

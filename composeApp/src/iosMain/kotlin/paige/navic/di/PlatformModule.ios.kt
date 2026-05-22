@@ -58,7 +58,8 @@ actual val platformModule = module {
 			stateRepository = get(),
 			downloadManager = get(),
 			connectivityManager = get(),
-			syncManager = get()
+			syncManager = get(),
+			sessionManager = get()
 		)
 	}
 
