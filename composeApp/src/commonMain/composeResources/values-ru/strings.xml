@@ -93,6 +93,7 @@
     <string name="action_play">Воспроизвести</string>
     <string name="action_new">Новый</string>
     <string name="action_shuffle">Случайно</string>
+    <string name="action_shuffle_all">Случайно все</string>
     <string name="action_repeat">На повтор</string>
     <string name="action_delete">Удалить</string>
     <string name="action_cancel">Отменить</string>

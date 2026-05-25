@@ -11,6 +11,7 @@ import paige.navic.domain.manager.ConnectivityManager
 import paige.navic.domain.manager.ShareManager
 import paige.navic.domain.manager.StorageManager
 import paige.navic.domain.repositories.PlayerStateRepository
+import paige.navic.domain.repositories.SongRepository
 import paige.navic.shared.AndroidMediaPlayerViewModel
 import paige.navic.shared.MediaPlayerViewModel
 
@@ -53,7 +54,8 @@ actual val platformModule = module {
 			downloadManager = get(),
 			connectivityManager = get(),
 			sessionManager = get(),
-			preferenceManager = get()
+			preferenceManager = get(),
+			songRepository = get()
 		)
 	}
 

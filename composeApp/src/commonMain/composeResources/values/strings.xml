@@ -256,6 +256,7 @@
 	<string name="action_play">Play</string>
 	<string name="action_new">New</string>
 	<string name="action_shuffle">Shuffle</string>
+	<string name="action_shuffle_all">Shuffle All</string>
 	<string name="action_repeat">Repeat</string>
 	<string name="action_delete">Delete</string>
 	<string name="action_cancel">Cancel</string>

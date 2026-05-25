@@ -14,6 +14,7 @@ import paige.navic.domain.models.DomainRadio
 import paige.navic.domain.models.DomainSong
 import paige.navic.domain.models.DomainSongCollection
 import paige.navic.domain.repositories.PlayerStateRepository
+import paige.navic.domain.repositories.SongRepository
 import paige.navic.domain.manager.ConnectivityManager
 import paige.navic.domain.manager.DownloadManager
 import paige.navic.ui.core.PlayerUiState
@@ -23,7 +24,8 @@ import kotlin.time.Duration.Companion.seconds
 abstract class MediaPlayerViewModel(
 	private val stateRepository: PlayerStateRepository,
 	protected val connectivityManager: ConnectivityManager,
-	protected val downloadManager: DownloadManager
+	protected val downloadManager: DownloadManager,
+	protected val songRepository: SongRepository
 ) : ViewModel() {
 
 	@Suppress("PropertyName")
@@ -60,6 +62,7 @@ abstract class MediaPlayerViewModel(
 	abstract fun toggleShuffle()
 	abstract fun toggleRepeat()
 	abstract fun shufflePlay(collection: DomainSongCollection)
+	abstract suspend fun shuffleAllSongs()
 	abstract fun setPlaybackSpeed(value: Float)
 
 	fun togglePlay() {

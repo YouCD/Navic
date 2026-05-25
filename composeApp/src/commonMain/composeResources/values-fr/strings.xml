@@ -111,6 +111,7 @@
     <string name="action_play">Lecture</string>
     <string name="action_new">Nouveau</string>
     <string name="action_shuffle">Aléatoire</string>
+    <string name="action_shuffle_all">Tout aléatoire</string>
     <string name="action_repeat">Répéter</string>
     <string name="action_delete">Supprimer</string>
     <string name="action_cancel">Annuler</string>

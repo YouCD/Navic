@@ -99,6 +99,7 @@
     <string name="action_play">Reproducir</string>
     <string name="action_new">Nuevo</string>
     <string name="action_shuffle">Aleatorio</string>
+    <string name="action_shuffle_all">Aleatorio Todo</string>
     <string name="action_repeat">Repetir</string>
     <string name="action_delete">Eliminar</string>
     <string name="action_cancel">Cancelar</string>

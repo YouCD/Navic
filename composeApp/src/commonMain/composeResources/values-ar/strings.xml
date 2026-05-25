@@ -143,6 +143,7 @@
     <string name="action_play">شغّل</string>
     <string name="action_new">جديد</string>
     <string name="action_shuffle">خلّط</string>
+    <string name="action_shuffle_all">خلّط الكل</string>
     <string name="action_repeat">كرّر</string>
     <string name="action_delete">احذف</string>
     <string name="action_cancel">إلغاء</string>

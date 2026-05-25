@@ -111,6 +111,7 @@
     <string name="action_play">Abspielen</string>
     <string name="action_new">Neu</string>
     <string name="action_shuffle">Zufällige Wiedergabe</string>
+    <string name="action_shuffle_all">Alle zufällig wiedergeben</string>
     <string name="action_repeat">Wiederholen</string>
     <string name="action_delete">Löschen</string>
     <string name="action_cancel">Abbrechen</string>

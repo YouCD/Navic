@@ -127,6 +127,7 @@
     <string name="action_play">Oynat</string>
     <string name="action_new">Yeni</string>
     <string name="action_shuffle">Karışık Çal</string>
+    <string name="action_shuffle_all">Tümünü Karışık Çal</string>
     <string name="action_repeat">Tekrarla</string>
     <string name="action_delete">Sil</string>
     <string name="action_cancel">İptal</string>

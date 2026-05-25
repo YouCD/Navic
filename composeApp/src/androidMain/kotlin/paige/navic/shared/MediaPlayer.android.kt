@@ -57,6 +57,7 @@ import paige.navic.domain.models.DomainSong
 import paige.navic.domain.models.DomainSongCollection
 import paige.navic.domain.models.settings.ReplayGainMode
 import paige.navic.domain.repositories.PlayerStateRepository
+import paige.navic.domain.repositories.SongRepository
 import paige.navic.ui.components.common.CoilBitmapLoader
 import paige.navic.ui.core.PlayerUiState
 import paige.navic.util.core.Logger
@@ -191,11 +192,13 @@ class AndroidMediaPlayerViewModel(
 	downloadManager: DownloadManager,
 	connectivityManager: ConnectivityManager,
 	private val sessionManager: SessionManager,
-	private val preferenceManager: PreferenceManager
+	private val preferenceManager: PreferenceManager,
+	songRepository: SongRepository
 ) : MediaPlayerViewModel(
 	stateRepository = stateRepository,
 	downloadManager = downloadManager,
-	connectivityManager = connectivityManager
+	connectivityManager = connectivityManager,
+	songRepository = songRepository
 ) {
 	private var controller: MediaController? = null
 	private var controllerFuture: ListenableFuture<MediaController>? = null
@@ -712,6 +715,29 @@ class AndroidMediaPlayerViewModel(
 					currentSong = shuffledSongs.firstOrNull()
 				)
 			}
+		}
+	}
+
+	override suspend fun shuffleAllSongs() {
+		val allSongs = songRepository.getAllSongs()
+		if (allSongs.isEmpty()) return
+
+		val shuffledSongs = allSongs.shuffled()
+		val mediaItems = shuffledSongs.map { it.toMediaItem() }
+
+		_uiState.update { state ->
+			state.copy(
+				queue = shuffledSongs,
+				currentIndex = 0,
+				currentSong = shuffledSongs.firstOrNull()
+			)
+		}
+
+		controller?.let { player ->
+			player.shuffleModeEnabled = false
+			player.setMediaItems(mediaItems, 0, 0L)
+			player.prepare()
+			player.play()
 		}
 	}
 

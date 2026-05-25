@@ -110,6 +110,7 @@
     <string name="action_play">Tocar</string>
     <string name="action_new">Novo</string>
     <string name="action_shuffle">Aleatório</string>
+    <string name="action_shuffle_all">Aleatório Tudo</string>
     <string name="action_repeat">Repetir</string>
     <string name="action_delete">Apagar</string>
     <string name="action_cancel">Cancelar</string>

@@ -17,6 +17,7 @@ import paige.navic.domain.models.DomainRadio
 import paige.navic.domain.models.DomainSong
 import paige.navic.domain.models.DomainSongCollection
 import paige.navic.domain.repositories.PlayerStateRepository
+import paige.navic.domain.repositories.SongRepository
 import paige.navic.ui.core.PlayerUiState
 import paige.navic.util.core.Logger
 import platform.AVFAudio.AVAudioSession
@@ -73,11 +74,13 @@ class IOSMediaPlayerViewModel(
 	connectivityManager: ConnectivityManager,
 	syncManager: SyncManager,
 	private val sessionManager: SessionManager,
-	private val preferenceManager: PreferenceManager
+	private val preferenceManager: PreferenceManager,
+	songRepository: SongRepository
 ) : MediaPlayerViewModel(
 	stateRepository = stateRepository,
 	downloadManager = downloadManager,
-	connectivityManager = connectivityManager
+	connectivityManager = connectivityManager,
+	songRepository = songRepository
 ) {
 	private val player = AVPlayer()
 	private var timeObserver: Any? = null
@@ -419,6 +422,21 @@ class IOSMediaPlayerViewModel(
 
 	override fun shufflePlay(collection: DomainSongCollection) {
 		val shuffledSongs = collection.songs.shuffled()
+		_uiState.update { state ->
+			state.copy(
+				queue = shuffledSongs,
+				currentIndex = 0,
+				currentSong = shuffledSongs.firstOrNull()
+			)
+		}
+		playAt(0)
+	}
+
+	override suspend fun shuffleAllSongs() {
+		val allSongs = songRepository.getAllSongs()
+		if (allSongs.isEmpty()) return
+
+		val shuffledSongs = allSongs.shuffled()
 		_uiState.update { state ->
 			state.copy(
 				queue = shuffledSongs,

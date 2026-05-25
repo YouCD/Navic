@@ -12,6 +12,7 @@ import paige.navic.domain.manager.ConnectivityManager
 import paige.navic.domain.manager.ShareManager
 import paige.navic.domain.manager.StorageManager
 import paige.navic.domain.repositories.PlayerStateRepository
+import paige.navic.domain.repositories.SongRepository
 import paige.navic.shared.IOSMediaPlayerViewModel
 import paige.navic.shared.MediaPlayerViewModel
 import platform.Foundation.NSDocumentDirectory
@@ -60,7 +61,8 @@ actual val platformModule = module {
 			connectivityManager = get(),
 			syncManager = get(),
 			sessionManager = get(),
-			preferenceManager = get()
+			preferenceManager = get(),
+			songRepository = get()
 		)
 	}
 

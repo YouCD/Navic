@@ -136,6 +136,7 @@
     <string name="action_ok">确定</string>
     <string name="action_play">播放</string>
     <string name="action_shuffle">随机播放</string>
+    <string name="action_shuffle_all">随机播放全部</string>
     <string name="action_repeat">循环</string>
     <string name="action_delete">删除</string>
     <string name="action_cancel">取消</string>

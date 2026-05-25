@@ -122,6 +122,7 @@
     <string name="action_play">Afspelen</string>
     <string name="action_new">Nieuw</string>
     <string name="action_shuffle">Shufflen</string>
+    <string name="action_shuffle_all">Alles shufflen</string>
     <string name="action_repeat">Herhaal</string>
     <string name="action_delete">Deleten</string>
     <string name="action_cancel">Annuleren</string>

@@ -26,6 +26,7 @@
     <string name="action_share">Condividi</string>
     <string name="action_share_lyrics">Condividi testo</string>
     <string name="action_shuffle">Casuale</string>
+    <string name="action_shuffle_all">Casuale Tutto</string>
     <string name="action_star">Aggiungi ai preferiti</string>
     <string name="action_track_info">Info sulla traccia</string>
     <string name="action_update_app">Aggiorna</string>

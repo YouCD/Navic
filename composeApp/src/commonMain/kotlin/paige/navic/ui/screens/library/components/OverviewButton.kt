@@ -84,3 +84,55 @@ fun LazyGridScope.libraryScreenOverviewButton(
 		}
 	}
 }
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+fun LazyGridScope.libraryScreenActionButton(
+	icon: ImageVector,
+	label: StringResource,
+	onClick: () -> Unit,
+	start: Boolean
+) {
+	item(span = { GridItemSpan(1) }) {
+		val platformContext = LocalPlatformContext.current
+		Button(
+			modifier = Modifier
+				.fillMaxWidth()
+				.height(42.dp)
+				.padding(
+					start = if (start) 16.dp else 0.dp,
+					end = if (!start) 16.dp else 0.dp,
+				),
+			contentPadding = PaddingValues(horizontal = 12.dp),
+			elevation = null,
+			shapes = ButtonDefaults.shapes(
+				shape = MaterialTheme.shapes.small,
+				pressedShape = MaterialTheme.shapes.extraSmall
+			),
+			colors = ButtonDefaults.buttonColors(
+				containerColor = MaterialTheme.colorScheme.surfaceContainer,
+				contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+			),
+			onClick = {
+				platformContext.clickSound()
+				onClick()
+			}
+		) {
+			Row(
+				modifier = Modifier.fillMaxWidth(),
+				verticalAlignment = Alignment.CenterVertically
+			) {
+				Icon(
+					icon,
+					contentDescription = null
+				)
+				Spacer(Modifier.width(10.dp))
+				Text(
+					stringResource(label),
+					maxLines = 1,
+					fontFamily = defaultFont(100, round = 100f),
+					autoSize = TextAutoSize.StepBased(minFontSize = 1.sp, maxFontSize = 14.sp),
+				)
+			}
+		}
+	}
+}
