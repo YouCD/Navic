@@ -92,7 +92,7 @@ fun LibraryScreenContent(
 		verticalArrangement = Arrangement.spacedBy(5.dp),
 		horizontalArrangement = Arrangement.spacedBy(5.dp),
 	) {
-		// Row 1: Newest, Random (navigate to random album list)
+		// Row 1: Newest, Random
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.LibraryAdd,
 			label = Res.string.option_sort_newest,
@@ -105,21 +105,27 @@ fun LibraryScreenContent(
 			destination = Screen.AlbumList(true, DomainAlbumListType.Random),
 			start = false
 		)
-		// Row 2: Shuffle All (action), Starred
+		// Row 2: Starred, Frequent
+		libraryScreenOverviewButton(
+			icon = Icons.Outlined.Star,
+			label = Res.string.option_sort_starred,
+			destination = Screen.Starred(),
+			start = true
+		)
+		libraryScreenOverviewButton(
+			icon = Icons.Outlined.History,
+			label = Res.string.option_sort_frequent,
+			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
+			start = false
+		)
+		// Row 3: Shuffle All
 		libraryScreenActionButton(
 			icon = Icons.Outlined.Shuffle,
 			label = Res.string.action_shuffle_all,
 			onClick = onShuffleAll,
 			start = true
 		)
-		libraryScreenOverviewButton(
-			icon = Icons.Outlined.Star,
-			label = Res.string.option_sort_starred,
-			destination = Screen.Starred(),
-			start = false
-		)
 
-		// Recently Played section (full width)
 		horizontalSection(
 			title = Res.string.option_sort_recent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Recent),
@@ -143,14 +149,6 @@ fun LibraryScreenContent(
 				onSetRating = onRateSelectedAlbum
 			)
 		}
-
-		// Frequent button
-		libraryScreenOverviewButton(
-			icon = Icons.Outlined.History,
-			label = Res.string.option_sort_frequent,
-			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
-			start = true
-		)
 
 		horizontalSection(
 			title = Res.string.title_playlists,
