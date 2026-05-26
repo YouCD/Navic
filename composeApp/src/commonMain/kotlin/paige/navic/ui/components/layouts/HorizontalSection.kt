@@ -73,7 +73,7 @@ fun LazyGridScope.header(
 	destination: NavKey,
 	active: Boolean
 ) {
-	item(span = { GridItemSpan(1) }) {
+	item(span = { GridItemSpan(maxLineSpan) }) {
 		Text(
 			stringResource(title, formatArgs),
 			style = MaterialTheme.typography.titleMediumEmphasized,
@@ -82,7 +82,7 @@ fun LazyGridScope.header(
 		)
 	}
 	if (active) {
-		item(span = { GridItemSpan(1) }) {
+		item(span = { GridItemSpan(maxLineSpan) }) {
 			val platformContext = LocalPlatformContext.current
 			val backStack = LocalNavStack.current
 			Text(
