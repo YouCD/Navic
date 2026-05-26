@@ -118,14 +118,8 @@ fun LibraryScreenContent(
 			destination = Screen.Starred(),
 			start = false
 		)
-		// Row 3: Frequent, Highest (Rating)
-		libraryScreenOverviewButton(
-			icon = Icons.Outlined.History,
-			label = Res.string.option_sort_frequent,
-			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
-			start = false
-		)
 
+		// Recently Played section (full width)
 		horizontalSection(
 			title = Res.string.option_sort_recent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Recent),
@@ -149,6 +143,14 @@ fun LibraryScreenContent(
 				onSetRating = onRateSelectedAlbum
 			)
 		}
+
+		// Frequent button
+		libraryScreenOverviewButton(
+			icon = Icons.Outlined.History,
+			label = Res.string.option_sort_frequent,
+			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
+			start = true
+		)
 
 		horizontalSection(
 			title = Res.string.title_playlists,
