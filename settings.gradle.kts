@@ -17,6 +17,11 @@ pluginManagement {
 	}
 }
 
+plugins {
+	// 如果本地没有 JDK 21 可以取消注释下面一行自动下载
+	// id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
 dependencyResolutionManagement {
 	repositories {
 		google {

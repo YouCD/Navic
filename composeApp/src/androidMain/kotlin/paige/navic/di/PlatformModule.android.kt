@@ -10,6 +10,7 @@ import paige.navic.data.database.DownloadDatabase
 import paige.navic.domain.manager.ConnectivityManager
 import paige.navic.domain.manager.LogManager
 import paige.navic.domain.manager.ShareManager
+import paige.navic.domain.manager.SnackBarManager
 import paige.navic.domain.manager.StorageManager
 import paige.navic.domain.repositories.PlayerStateRepository
 import paige.navic.domain.repositories.SongRepository
@@ -55,8 +56,10 @@ actual val platformModule = module {
 			downloadManager = get(),
 			connectivityManager = get(),
 			sessionManager = get(),
+			platformContext = get(),
 			preferenceManager = get(),
-			songRepository = get()
+			songRepository = get(),
+			snackBarManager = get()
 		)
 	}
 
