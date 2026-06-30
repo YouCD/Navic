@@ -193,7 +193,7 @@ fun App() {
 							rememberListDetailSceneStrategy()
 						),
 						onBack = {
-							if (backStack.isNotEmpty()) {
+							if (backStack.size >= 2) {
 								backStack.removeLastOrNull()
 							}
 						},
