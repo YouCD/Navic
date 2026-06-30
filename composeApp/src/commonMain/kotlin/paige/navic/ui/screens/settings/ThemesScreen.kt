@@ -98,29 +98,7 @@ fun SettingsThemesScreen() {
 					.verticalScroll(rememberScrollState())
 					.padding(top = 16.dp, end = 16.dp, start = 16.dp)
 			) {
-				//FormTitle(stringResource(Res.string.title_theme_mode))
 				Form {
-					// wasn't sure about this design so just commenting it out if I change my mind later yk
-
-					//FormRow(
-					//	contentPadding = PaddingValues(
-					//		horizontal = 28.dp,
-					//		vertical = 22.dp
-					//	)
-					//) {
-					//	LazyRow(
-					//		modifier = Modifier.fillMaxWidth(),
-					//		horizontalArrangement = Arrangement.SpaceBetween
-					//	) {
-					//		items(ThemeMode.entries) { themeMode ->
-					//			ThemeModeCard(
-					//				themeMode = themeMode,
-					//				isSelected = preferenceManager.themeMode == themeMode,
-					//				onSelect = { preferenceManager.themeMode = themeMode }
-					//			)
-					//		}
-					//	}
-					//}
 					SettingSelectionRow(
 						title = { Text(stringResource(Res.string.title_theme_mode)) },
 						items = ThemeMode.entries.toImmutableList(),
@@ -271,50 +249,6 @@ private fun ThemeCard(
 		}
 	}
 }
-
-//@Composable
-//private fun ThemeModeCard(
-//	themeMode: ThemeMode,
-//	isSelected: Boolean,
-//	onSelect: () -> Unit
-//) {
-//	val title = stringResource(themeMode.title)
-//
-//	Column(
-//		modifier = Modifier
-//			.clip(MaterialTheme.shapes.extraSmall),
-//		horizontalAlignment = Alignment.CenterHorizontally,
-//		verticalArrangement = Arrangement.spacedBy(8.dp)
-//	) {
-//		BaseCard(
-//			modifier = Modifier.semantics {
-//				contentDescription = title
-//			},
-//			isSelected = isSelected,
-//			onSelect = onSelect,
-//			square = true
-//		) {
-//			Box(
-//				modifier = Modifier
-//					.weight(1f)
-//					.fillMaxSize()
-//					.background(MaterialTheme.colorScheme.primaryContainer),
-//				contentAlignment = Alignment.Center
-//			) {
-//				Icon(
-//					when (themeMode) {
-//						ThemeMode.Dark -> if (isSelected) Icons.Filled.Dark else Icons.Outlined.Dark
-//						ThemeMode.Light -> if (isSelected) Icons.Filled.Light else Icons.Outlined.Light
-//						ThemeMode.System -> if (isSelected) Icons.Filled.Auto else Icons.Outlined.Auto
-//					},
-//					contentDescription = null,
-//					tint = MaterialTheme.colorScheme.onPrimaryContainer
-//				)
-//			}
-//		}
-//		Text(title)
-//	}
-//}
 
 @Composable
 private fun ThemeAccentPicker() {
