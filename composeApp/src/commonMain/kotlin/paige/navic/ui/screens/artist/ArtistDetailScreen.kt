@@ -73,6 +73,7 @@ import paige.navic.LocalPlatformContext
 import paige.navic.data.database.entities.DownloadStatus
 import paige.navic.domain.manager.DownloadManager
 import paige.navic.domain.manager.PreferenceManager
+import paige.navic.domain.manager.SnackBarManager
 import paige.navic.domain.models.settings.BottomBarVisibilityMode
 import paige.navic.shared.MediaPlayerViewModel
 import paige.navic.ui.components.common.ErrorBox
@@ -82,7 +83,6 @@ import paige.navic.ui.components.layouts.ArtCarousel
 import paige.navic.ui.components.layouts.ArtCarouselItem
 import paige.navic.ui.components.layouts.RootBottomBar
 import paige.navic.ui.components.sheets.CollectionSheet
-import paige.navic.domain.manager.SnackBarManager
 import paige.navic.ui.core.UiState
 import paige.navic.ui.navigation.Screen
 import paige.navic.ui.screens.artist.components.ArtistActionButtons
@@ -194,7 +194,10 @@ fun ArtistDetailScreen(
 					val state = artistState.data
 					BulkDownloadDialog(
 						title = stringResource(Res.string.title_bulk_download),
-						message = stringResource(Res.string.info_bulk_download_warning, state.artist.name),
+						message = stringResource(
+							Res.string.info_bulk_download_warning,
+							state.artist.name
+						),
 						showDialog = showDownloadDialog,
 						onDismissRequest = { showDownloadDialog = false },
 						onConfirm = {
@@ -296,7 +299,8 @@ fun ArtistDetailScreen(
 										modifier = Modifier.fillMaxWidth().height(250.dp)
 									) {
 										itemsIndexed(songs) { index, song ->
-											val download = allDownloads.find { it.songId == song.id }
+											val download =
+												allDownloads.find { it.songId == song.id }
 											SongRow(
 												modifier = Modifier.weight(1f),
 												song = song,
@@ -338,8 +342,8 @@ fun ArtistDetailScreen(
 									.getCollectionDownloadStatus(album.songs.map { it.id })
 									.collectAsState(initial = DownloadStatus.NOT_DOWNLOADED)
 								ArtCarouselItem(
-									coverArtId = album.coverArtId, 
-									title = album.name, 
+									coverArtId = album.coverArtId,
+									title = album.name,
 									contentDescription = null,
 									onSelect = { viewModel.selectAlbum(album) },
 									onClick = dropUnlessResumed {
@@ -357,7 +361,7 @@ fun ArtistDetailScreen(
 										onSetStarred = { viewModel.starAlbum(!selectedAlbumIsStarred) },
 										onAddAllToPlaylist = { playlistDialogShown = true },
 										downloadStatus = albumDownloadStatus,
-										onDownloadAll = { 
+										onDownloadAll = {
 											scope.launch {
 												downloadManager.downloadCollection(album)
 												snackBarManager.notify(Res.string.notice_download_started)
@@ -365,7 +369,11 @@ fun ArtistDetailScreen(
 										},
 										onCancelDownloadAll = {
 											scope.launch {
-												album.songs.forEach { downloadManager.cancelDownload(it.id) }
+												album.songs.forEach {
+													downloadManager.cancelDownload(
+														it.id
+													)
+												}
 											}
 										},
 										onDeleteDownloadAll = {
@@ -385,8 +393,8 @@ fun ArtistDetailScreen(
 								state.similarArtists.toImmutableList()
 							) { artist ->
 								ArtCarouselItem(
-									coverArtId = artist.coverArtId, 
-									title = artist.name, 
+									coverArtId = artist.coverArtId,
+									title = artist.name,
 									subtitle = pluralStringResource(
 										Res.plurals.count_albums,
 										artist.albumCount,

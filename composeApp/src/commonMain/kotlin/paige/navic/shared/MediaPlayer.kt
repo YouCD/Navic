@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
+import paige.navic.domain.manager.ConnectivityManager
+import paige.navic.domain.manager.DownloadManager
 import paige.navic.domain.models.DomainRadio
 import paige.navic.domain.models.DomainSong
 import paige.navic.domain.models.DomainSongCollection
 import paige.navic.domain.repositories.PlayerStateRepository
 import paige.navic.domain.repositories.SongRepository
-import paige.navic.domain.manager.ConnectivityManager
-import paige.navic.domain.manager.DownloadManager
 import paige.navic.ui.core.PlayerUiState
 import paige.navic.util.core.Logger
 import kotlin.time.Duration.Companion.seconds
@@ -85,7 +85,7 @@ abstract class MediaPlayerViewModel(
 	}
 
 	fun togglePlay() {
-		if (!_uiState.value.isPaused) {
+		if (!uiState.value.isPaused) {
 			pause()
 		} else {
 			resume()
@@ -117,7 +117,7 @@ abstract class MediaPlayerViewModel(
 	@OptIn(FlowPreview::class)
 	private fun observeAndSaveState() {
 		viewModelScope.launch {
-			_uiState
+			uiState
 				.debounce(1.seconds)
 				.collect { state ->
 					try {

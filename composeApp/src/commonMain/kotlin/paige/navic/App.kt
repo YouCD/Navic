@@ -49,21 +49,21 @@ import androidx.navigation3.ui.NavDisplay.predictivePopTransitionSpec
 import androidx.navigation3.ui.NavDisplay.transitionSpec
 import androidx.savedstate.serialization.SavedStateConfiguration
 import coil3.compose.setSingletonImageLoaderFactory
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import kotlinx.coroutines.flow.collectLatest
 import org.jetbrains.compose.resources.getString
 import org.koin.compose.koinInject
 import paige.navic.di.initializeSingletonImageLoader
 import paige.navic.domain.manager.BottomBarScrollManager
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.manager.SessionManager
+import paige.navic.domain.manager.SnackBarManager
 import paige.navic.shared.MediaPlayerViewModel
-import paige.navic.ui.components.snackbars.NavicSnackbar
 import paige.navic.ui.components.dialogs.SideloadingDialog
 import paige.navic.ui.components.sheets.ChangelogSheet
-import paige.navic.domain.manager.SnackBarManager
+import paige.navic.ui.components.snackbars.NavicSnackbar
 import paige.navic.ui.navigation.BottomSheetSceneStrategy
 import paige.navic.ui.navigation.NowPlayingSceneStrategy
 import paige.navic.ui.navigation.Screen
@@ -94,6 +94,7 @@ import paige.navic.ui.screens.settings.SettingsNowPlayingScreen
 import paige.navic.ui.screens.settings.SettingsPlaybackScreen
 import paige.navic.ui.screens.settings.SettingsScreen
 import paige.navic.ui.screens.settings.SettingsStreamingQualityScreen
+import paige.navic.ui.screens.settings.SettingsThemesScreen
 import paige.navic.ui.screens.share.ShareListScreen
 import paige.navic.ui.screens.song.SongDetailScreen
 import paige.navic.ui.screens.song.SongListScreen
@@ -113,7 +114,8 @@ private val config = SavedStateConfiguration {
 	}
 }
 
-val LocalPlatformContext = staticCompositionLocalOf<PlatformContext> { error("no platform context") }
+val LocalPlatformContext =
+	staticCompositionLocalOf<PlatformContext> { error("no platform context") }
 val LocalNavStack = staticCompositionLocalOf<NavBackStack<NavKey>> { error("no backstack") }
 val LocalSnackbarState = staticCompositionLocalOf<SnackbarHostState> { error("no snackbar state") }
 val LocalSharedTransitionScope =
@@ -191,7 +193,7 @@ fun App() {
 							rememberListDetailSceneStrategy()
 						),
 						onBack = {
-							if (backStack.isNotEmpty()) {
+							if (backStack.size >= 2) {
 								backStack.removeLastOrNull()
 							}
 						},
@@ -343,6 +345,9 @@ private fun entryProvider(
 		}
 		entry<Screen.Settings.Fonts> {
 			FontsScreen()
+		}
+		entry<Screen.Settings.Themes> {
+			SettingsThemesScreen()
 		}
 		entry<Screen.Settings.CustomHeaders> {
 			SettingsCustomHeadersScreen()

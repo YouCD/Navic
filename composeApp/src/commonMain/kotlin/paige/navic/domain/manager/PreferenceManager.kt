@@ -1,5 +1,7 @@
 package paige.navic.domain.manager
 
+import com.materialkolor.PaletteStyle
+import com.materialkolor.dynamiccolor.ColorSpec
 import paige.navic.domain.manager.base.BasePreferenceManager
 import paige.navic.domain.models.settings.AnimationStyle
 import paige.navic.domain.models.settings.BottomBarCollapseMode
@@ -33,6 +35,7 @@ class PreferenceManager(
 	var swipeToSkip by preference(true)
 	var gridSize by preference(GridSize.TwoByTwo)
 	var coverArtShape by preference(CoverArtShape.Soft)
+	var artistImageShape by preference(CoverArtShape.Soft)
 	var coverArtQuality by preference(CoverArtQuality.High)
 	var artGridItemSize by preference(150f)
 	var marqueeSpeed by preference(MarqueeSpeed.Slow)
@@ -64,8 +67,8 @@ class PreferenceManager(
 	var bottomBarVisibilityMode by preference(BottomBarVisibilityMode.AllScreens)
 	var navigationBarStyle by preference(NavigationBarStyle.Normal)
 	var navigationBarLabelVisibility by preference(
-        NavigationBarLabelVisibility.Always
-    )
+		NavigationBarLabelVisibility.Always
+	)
 	var miniPlayerStyle by preference(MiniPlayerStyle.Detached)
 	var miniPlayerProgressStyle by preference(MiniPlayerProgressStyle.Seekable)
 
@@ -78,9 +81,9 @@ class PreferenceManager(
 	// theme related settings
 	var theme by preference(Theme.Dynamic)
 	var themeMode by preference(ThemeMode.System)
-	var accentColourH by preference(0f)
-	var accentColourS by preference(0f)
-	var accentColourV by preference(1f)
+	var paletteStyle by preference(PaletteStyle.TonalSpot)
+	var paletteSpec by preference(ColorSpec.SpecVersion.SPEC_2025)
+	var paletteAccentH by preference(0f)
 
 	// sync related settings
 	var lastFullSyncTime by preference(0L)
