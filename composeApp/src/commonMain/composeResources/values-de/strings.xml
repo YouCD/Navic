@@ -21,6 +21,7 @@
     <string name="action_see_all">Alle anzeigen</string>
     <string name="action_share">Teilen</string>
     <string name="action_shuffle">Zufallswiedergabe</string>
+    <string name="action_shuffle_all">Alle zufällig wiedergeben</string>
     <string name="action_star">Zu Favoriten hinzufügen</string>
     <string name="action_track_info">Lieddetails anzeigen</string>
     <string name="action_view_album">Album anzeigen</string>

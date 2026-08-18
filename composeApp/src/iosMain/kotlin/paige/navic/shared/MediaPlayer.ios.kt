@@ -460,6 +460,21 @@ class IOSMediaPlayerViewModel(
 		playAt(0)
 	}
 
+	override suspend fun shuffleAllSongs() {
+		val allSongs = songRepository.getAllSongs()
+		if (allSongs.isEmpty()) return
+
+		val shuffledSongs = allSongs.shuffled()
+		_uiState.update { state ->
+			state.copy(
+				queue = shuffledSongs,
+				currentIndex = 0,
+				currentSong = shuffledSongs.firstOrNull()
+			)
+		}
+		playAt(0)
+	}
+
 	override fun setPlaybackSpeed(value: Float) {
 		player.setRate(value)
 		_uiState.update { it.copy(playbackSpeed = value) }

@@ -14,6 +14,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import navic.composeapp.generated.resources.Res
+import navic.composeapp.generated.resources.action_shuffle_all
 import navic.composeapp.generated.resources.option_sort_frequent
 import navic.composeapp.generated.resources.option_sort_newest
 import navic.composeapp.generated.resources.option_sort_random
@@ -47,6 +48,7 @@ fun LibraryScreenContent(
 	scrollBehavior: TopAppBarScrollBehavior,
 	innerPadding: PaddingValues,
 	onSetShareId: (String) -> Unit,
+	onShuffleAll: () -> Unit,
 
 	// albums
 	albumsState: UiState<ImmutableList<DomainAlbum>>,
@@ -90,6 +92,7 @@ fun LibraryScreenContent(
 		verticalArrangement = Arrangement.spacedBy(5.dp),
 		horizontalArrangement = Arrangement.spacedBy(5.dp),
 	) {
+		// Row 1: Newest, Random
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.LibraryAdd,
 			label = Res.string.option_sort_newest,
@@ -102,6 +105,7 @@ fun LibraryScreenContent(
 			destination = Screen.AlbumList(true, DomainAlbumListType.Random),
 			start = false
 		)
+		// Row 2: Starred, Frequent
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.Star,
 			label = Res.string.option_sort_starred,
@@ -113,6 +117,13 @@ fun LibraryScreenContent(
 			label = Res.string.option_sort_frequent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
 			start = false
+		)
+		// Row 3: Shuffle All
+		libraryScreenActionButton(
+			icon = Icons.Outlined.Shuffle,
+			label = Res.string.action_shuffle_all,
+			onClick = onShuffleAll,
+			start = true
 		)
 
 		horizontalSection(
