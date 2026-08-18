@@ -16,7 +16,10 @@ import io.ktor.client.engine.ProxyBuilder
 import io.ktor.client.engine.http
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.isSuccess
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -78,8 +81,20 @@ class SessionManager(
 					customHeaders.forEach { (key, value) -> header(key, value) }
 				}
 			}
-		},
-		engine = getDefaultEngineForPlatform(preferenceManager.dangerousSslNoopEnabled)
+		HttpResponseValidator {
+			validateResponse { response ->
+				if (!response.status.isSuccess()) {
+					val statusCode = response.status.value
+					val body = try { response.bodyAsText() } catch (_: Exception) { "" }
+					throw io.ktor.client.plugins.ResponseException(
+						response,
+						"HTTP $statusCode: ${response.status.description}${if (body.isNotEmpty()) "\n$body" else ""}"
+					)
+				}
+			}
+		}
+	},
+	engine = getDefaultEngineForPlatform(preferenceManager.dangerousSslNoopEnabled)
 	)
 
 	suspend fun login(

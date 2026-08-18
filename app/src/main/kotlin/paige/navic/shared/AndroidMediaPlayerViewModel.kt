@@ -654,6 +654,31 @@ class AndroidMediaPlayerViewModel(
 		}
 	}
 
+	override suspend fun shuffleAllSongs() = launchInView {
+		val allSongs = songRepository.getAllSongs()
+		if (allSongs.isEmpty()) return@launchInView
+
+		val (shuffledSongs, mediaItems) = withContext(Dispatchers.Default) {
+			val songs = allSongs.shuffled()
+			songs to songs.map { it.toMediaItem() }
+		}
+
+		controller?.let { player ->
+			player.shuffleModeEnabled = false
+			player.setMediaItems(mediaItems, 0, 0L)
+			player.prepare()
+			player.play()
+		}
+
+		_uiState.update { state ->
+			state.copy(
+				queue = shuffledSongs,
+				currentIndex = 0,
+				currentSong = shuffledSongs.firstOrNull()
+			)
+		}
+	}
+
 	override fun pause() = launchInView(true) {
 		controller?.pause()
 	}

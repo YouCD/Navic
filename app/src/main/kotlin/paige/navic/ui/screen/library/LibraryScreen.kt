@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -42,6 +43,7 @@ import paige.navic.ui.component.snackbar.ErrorSnackBar
 import paige.navic.ui.core.LoginUiState
 import paige.navic.ui.core.UiState
 import paige.navic.ui.navigation.PersistentViewModelStoreOwner
+import kotlinx.coroutines.launch
 import paige.navic.ui.screen.album.viewmodel.AlbumListViewModel
 import paige.navic.ui.screen.artist.viewmodel.ArtistListViewModel
 import paige.navic.ui.screen.genre.viewmodel.GenreListViewModel
@@ -102,6 +104,7 @@ fun LibraryScreen() {
 	var playlistCreateDialogShown by rememberSaveable { mutableStateOf(false) }
 
 	val player = koinInject<MediaPlayerViewModel>()
+	val scope = rememberCoroutineScope()
 
 	val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
 
@@ -150,8 +153,9 @@ fun LibraryScreen() {
 				scrollBehavior = scrollBehavior,
 				innerPadding = innerPadding,
 				onSetShareId = { shareId = it },
+				onShuffleAll = { scope.launch { player.shuffleAllSongs() } },
 
-				albumsState = albumsState,
+			albumsState = albumsState,
 				selectedAlbum = selectedAlbum,
 				selectedAlbumIsStarred = selectedAlbumIsStarred,
 				selectedAlbumRating = selectedAlbumRating,
