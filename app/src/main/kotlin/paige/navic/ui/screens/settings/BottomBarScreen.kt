@@ -27,8 +27,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.koinInject
 import paige.navic.R
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.isLandscape
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.BottomBarCollapseMode
 import paige.navic.domain.models.settings.BottomBarVisibilityMode
@@ -46,8 +45,8 @@ import paige.navic.ui.screens.settings.dialogs.NavtabsDialog
 
 @Composable
 fun BottomBarScreen() {
-	val platformContext = LocalPlatformContext.current
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	var tabsDialogOpen by rememberSaveable { mutableStateOf(false) }
 	val preferenceManager = koinInject<PreferenceManager>()
 
@@ -74,7 +73,7 @@ fun BottomBarScreen() {
 				verticalArrangement = Arrangement.spacedBy(SettingsGroupDefaults.GapBetweenGroups)
 			) {
 				SettingsGroup {
-					val count = if (!platformContext.isLandscape()) 2 else 1
+					val count = if (!hideBack) 2 else 1
 					SettingsChoiceItem(
 						choices = BottomBarCollapseMode.entries.toImmutableList(),
 						selectedChoice = preferenceManager.bottomBarCollapseMode,
@@ -84,7 +83,7 @@ fun BottomBarScreen() {
 						shapes = SegmentedListItemDefaults.segmentedShapes(index = 0, count = count)
 					)
 
-					if (!platformContext.isLandscape()) {
+					if (!hideBack) {
 						SettingsChoiceItem(
 							choices = BottomBarVisibilityMode.entries.toImmutableList(),
 							selectedChoice = preferenceManager.bottomBarVisibilityMode,

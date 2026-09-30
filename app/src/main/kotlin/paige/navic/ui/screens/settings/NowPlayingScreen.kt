@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.koinInject
 import paige.navic.R
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.CoverArtTapAction
 import paige.navic.domain.models.settings.NowPlayingBackgroundStyle
@@ -46,8 +46,8 @@ import paige.navic.ui.screens.settings.dialogs.NowPlayingSliderStyleDialog
 
 @Composable
 fun SettingsNowPlayingScreen() {
-	val platformContext = LocalPlatformContext.current
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	val preferenceManager = koinInject<PreferenceManager>()
 	var lyricProvidersSheetOpen by rememberSaveable { mutableStateOf(false) }
 	var sliderStyleDialogOpen by rememberSaveable { mutableStateOf(false) }

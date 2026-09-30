@@ -46,8 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import org.koin.compose.koinInject
 import paige.navic.R
-import paige.navic.di.LocalPlatformContext
 import paige.navic.di.LocalSharedTransitionScope
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.ListViewMode
 import paige.navic.ui.components.common.CoverArt
@@ -67,12 +67,12 @@ fun ArtGrid(
 	columns: GridCells? = null,
 	content: LazyGridScope.() -> Unit
 ) {
-	val platformContext = LocalPlatformContext.current
+	val sizeClass = LocalSizeClass.current
 	val preferenceManager = koinInject<PreferenceManager>()
 	val artGridItemSize = preferenceManager.artGridItemSize
 	val gridColumns = columns ?: if (selectedViewMode == ListViewMode.List) {
 		GridCells.Fixed(1)
-	} else if (platformContext.sizeClass.widthSizeClass <= WindowWidthSizeClass.Compact) {
+	} else if (sizeClass.widthSizeClass <= WindowWidthSizeClass.Compact) {
 		GridCells.Fixed(preferenceManager.gridSize.value)
 	} else {
 		GridCells.Adaptive(artGridItemSize.dp)

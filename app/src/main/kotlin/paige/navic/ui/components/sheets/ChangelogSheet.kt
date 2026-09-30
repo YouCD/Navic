@@ -6,6 +6,7 @@
 
 package paige.navic.ui.components.sheets
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -49,10 +50,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.parameter.parametersOf
 import paige.navic.R
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.PlatformContext
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.ui.components.common.Markdown
 import paige.navic.ui.components.dialogs.LinkConfirmationDialog
@@ -67,7 +65,7 @@ data class GitHubRelease(
 )
 
 class ChangelogViewModel(
-	platformContext: PlatformContext
+	context: Context
 ) : ViewModel() {
 	val release: StateFlow<GitHubRelease?>
 		field = MutableStateFlow(null)
@@ -79,7 +77,11 @@ class ChangelogViewModel(
 	}
 
 	init {
-		checkForUpdates(platformContext.appVersion)
+		checkForUpdates(
+			context.packageManager
+				.getPackageInfo(context.packageName, 0)
+				.versionName.toString()
+		)
 	}
 
 	fun checkForUpdates(currentVersion: String) {
@@ -113,10 +115,7 @@ class ChangelogViewModel(
 @Composable
 fun ChangelogSheet() {
 	val preferenceManager = koinInject<PreferenceManager>()
-	val platformContext = LocalPlatformContext.current
-	val viewModel = koinViewModel<ChangelogViewModel>(
-		parameters = { parametersOf(platformContext) }
-	)
+	val viewModel = koinViewModel<ChangelogViewModel>()
 	val release by viewModel.release.collectAsStateWithLifecycle()
 	var linkToOpen by rememberSaveable { mutableStateOf<String?>(null) }
 

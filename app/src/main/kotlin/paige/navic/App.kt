@@ -7,6 +7,7 @@
 package paige.navic
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.ContentTransform
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -33,7 +34,9 @@ import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy.Companion.detailPane
 import androidx.compose.material3.adaptive.navigation3.ListDetailSceneStrategy.Companion.listPane
 import androidx.compose.material3.adaptive.navigation3.rememberListDetailSceneStrategy
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -68,10 +71,9 @@ import kotlinx.serialization.modules.polymorphic
 import org.koin.compose.koinInject
 import paige.navic.di.LocalBottomBarScrollManager
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
 import paige.navic.di.LocalSharedTransitionScope
+import paige.navic.di.LocalSizeClass
 import paige.navic.di.LocalSnackBarState
-import paige.navic.di.rememberPlatformContext
 import paige.navic.domain.manager.BottomBarScrollManager
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.manager.SessionManager
@@ -138,11 +140,14 @@ private val config = SavedStateConfiguration {
 	}
 }
 
-@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+@OptIn(ExperimentalMaterial3AdaptiveApi::class, ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun App() {
+	val density = LocalDensity.current
+	val activity = LocalActivity.current!!
 	val resources = LocalResources.current
-	val platformContext = rememberPlatformContext()
+
+	val sizeClass = calculateWindowSizeClass(activity)
 	val sessionManager = koinInject<SessionManager>()
 	val preferenceManager = koinInject<PreferenceManager>()
 
@@ -165,7 +170,6 @@ fun App() {
 		}
 	}
 
-	val density = LocalDensity.current
 	val scrollManager = remember {
 		BottomBarScrollManager(with(density) { 50.dp.toPx() })
 	}
@@ -183,15 +187,15 @@ fun App() {
 
 	SharedTransitionLayout {
 		CompositionLocalProvider(
-			LocalPlatformContext provides platformContext,
 			LocalNavStack provides backStack,
 			LocalSnackBarState provides snackBarState,
 			LocalSharedTransitionScope provides this@SharedTransitionLayout,
-			LocalBottomBarScrollManager provides scrollManager
+			LocalBottomBarScrollManager provides scrollManager,
+			LocalSizeClass provides sizeClass
 		) {
 			NavicTheme {
 				Row(modifier = Modifier.fillMaxSize()) {
-					if (platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+					if (sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 						&& Screen.Login !in backStack) {
 						SideBar()
 					}

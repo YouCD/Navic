@@ -41,22 +41,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.dropUnlessResumed
 import coil3.ImageLoader
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.compose.ui.res.pluralStringResource
-import androidx.compose.ui.res.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import paige.navic.R
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.CoverArtQuality
 import paige.navic.domain.models.settings.OfflineMode
@@ -80,9 +79,9 @@ import kotlin.time.Instant
 fun SettingsDataStorageScreen() {
 	val viewModel = koinViewModel<SettingsDataStorageViewModel>()
 
-	val platformContext = LocalPlatformContext.current
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	val backStack = LocalNavStack.current
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	val preferenceManager = koinInject<PreferenceManager>()
 	val scope = rememberCoroutineScope()
 	val imageLoader = koinInject<ImageLoader>()

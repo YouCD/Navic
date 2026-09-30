@@ -26,7 +26,7 @@ import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.koinInject
 import paige.navic.R
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.ExplicitContentPlayback
 import paige.navic.ui.components.common.SegmentedListItemDefaults
@@ -43,9 +43,9 @@ import kotlin.math.roundToInt
 
 @Composable
 fun SettingsPlaybackScreen() {
-	val platformContext = LocalPlatformContext.current
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	val backStack = LocalNavStack.current
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	val preferenceManager = koinInject<PreferenceManager>()
 
 	Scaffold(

@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.koinInject
 import paige.navic.R
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.AnimationStyle
 import paige.navic.domain.models.settings.MarqueeSpeed
@@ -57,11 +57,11 @@ import paige.navic.ui.screens.settings.dialogs.GridSizePreview
 fun SettingsAppearanceScreen() {
 	val preferenceManager = koinInject<PreferenceManager>()
 
-	val backStack = LocalNavStack.current
-	val platformContext = LocalPlatformContext.current
 
-	val isCompact = platformContext.sizeClass.widthSizeClass <= WindowWidthSizeClass.Compact
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+	val backStack = LocalNavStack.current
+	val sizeClass = LocalSizeClass.current
+	val isCompact = sizeClass.widthSizeClass <= WindowWidthSizeClass.Compact
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 
 	var showArtworkShapeDialog by rememberSaveable { mutableStateOf(false) }
 	var showArtistImageShapeDialog by rememberSaveable { mutableStateOf(false) }

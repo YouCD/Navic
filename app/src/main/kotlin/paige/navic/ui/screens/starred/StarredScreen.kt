@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,8 +26,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import paige.navic.R
 import paige.navic.di.LocalBottomBarScrollManager
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.isLandscape
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.DomainAlbumListType
 import paige.navic.domain.models.DomainArtistListType
@@ -51,7 +51,6 @@ import kotlin.time.Duration
 
 @Composable
 fun StarredScreen() {
-	val platformContext = LocalPlatformContext.current
 	val persistentViewModelStoreOwner = koinInject<PersistentViewModelStoreOwner>()
 	val preferenceManager = koinInject<PreferenceManager>()
 
@@ -113,10 +112,11 @@ fun StarredScreen() {
 	Scaffold(
 		topBar = { NestedTopBar({ Text(stringResource(R.string.title_starred)) }) },
 		bottomBar = {
+			val sizeClass = LocalSizeClass.current
 			val scrollManager = LocalBottomBarScrollManager.current
 			val preferVisible =
 				preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
-			if (!platformContext.isLandscape() && preferVisible) {
+			if (sizeClass.widthSizeClass < WindowWidthSizeClass.Medium && preferVisible) {
 				RootBottomBar(scrolled = scrollManager.isTriggered)
 			}
 		}

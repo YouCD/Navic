@@ -25,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import org.koin.compose.koinInject
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.BottomBarCollapseMode
 import paige.navic.domain.models.settings.MiniPlayerStyle
@@ -39,8 +39,8 @@ fun RootBottomBar(
 	hideMiniPlayer: Boolean = false,
 	windowInsets: WindowInsets = WindowInsets.systemBars
 ) {
-	val platformContext = LocalPlatformContext.current
-	if (platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium) return
+	val sizeClass = LocalSizeClass.current
+	if (sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium) return
 
 	val preferenceManager = koinInject<PreferenceManager>()
 	val scrolled =

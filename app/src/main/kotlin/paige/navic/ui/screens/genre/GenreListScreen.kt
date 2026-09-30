@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -27,8 +28,7 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import paige.navic.R
 import paige.navic.di.LocalBottomBarScrollManager
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.isLandscape
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.settings.BottomBarVisibilityMode
 import paige.navic.ui.components.layouts.ArtGrid
@@ -48,7 +48,6 @@ import paige.navic.ui.viewmodel.RootViewModel
 fun GenreListScreen(
 	nested: Boolean
 ) {
-	val platformContext = LocalPlatformContext.current
 	val preferenceManager = koinInject<PreferenceManager>()
 	val viewModel = koinViewModel<GenreListViewModel>(
 		viewModelStoreOwner = if (nested) {
@@ -81,9 +80,12 @@ fun GenreListScreen(
 			}
 		},
 		bottomBar = {
+			val sizeClass = LocalSizeClass.current
 			val scrollManager = LocalBottomBarScrollManager.current
-			val preferVisible = preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
-			if (!nested || (!platformContext.isLandscape() && preferVisible)) {
+			val preferVisible =
+				preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
+			if (!nested
+				|| (sizeClass.widthSizeClass < WindowWidthSizeClass.Medium && preferVisible)) {
 				RootBottomBar(scrolled = scrollManager.isTriggered)
 			}
 		}

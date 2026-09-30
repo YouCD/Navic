@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -42,8 +43,7 @@ import org.koin.core.parameter.parametersOf
 import paige.navic.R
 import paige.navic.data.database.entities.DownloadStatus
 import paige.navic.di.LocalBottomBarScrollManager
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.isLandscape
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.DomainAlbum
 import paige.navic.domain.models.DomainPlaylist
@@ -76,7 +76,6 @@ fun CollectionDetailScreen(
 	collectionId: String,
 	tab: String
 ) {
-	val platformContext = LocalPlatformContext.current
 	val preferenceManager = koinInject<PreferenceManager>()
 
 	val viewModel = koinViewModel<CollectionDetailViewModel>(
@@ -160,9 +159,11 @@ fun CollectionDetailScreen(
 				)
 			},
 			bottomBar = {
+				val sizeClass = LocalSizeClass.current
 				val scrollManager = LocalBottomBarScrollManager.current
-				val preferVisible = preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
-				if (!platformContext.isLandscape() && preferVisible) {
+				val preferVisible =
+					preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
+				if (sizeClass.widthSizeClass < WindowWidthSizeClass.Medium && preferVisible) {
 					RootBottomBar(scrolled = scrollManager.isTriggered)
 				}
 			}

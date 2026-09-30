@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.kyant.capsule.ContinuousRoundedRectangle
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.ui.theme.defaultFont
 
 @Composable
@@ -44,8 +44,8 @@ fun SheetToolbar(
 	navigationIcon: @Composable () -> Unit,
 	actions: @Composable () -> Unit = {}
 ) {
-	val platformContext = LocalPlatformContext.current
-	val isLandscape = platformContext.sizeClass.widthSizeClass > WindowWidthSizeClass.Compact
+	val sizeClass = LocalSizeClass.current
+	val isLandscape = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	Row(
 		modifier = modifier
 			.fillMaxWidth()

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
+import paige.navic.di.LocalBottomBarScrollManager
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.DomainAlbumListType
 import paige.navic.domain.models.DomainSong
@@ -39,16 +42,12 @@ import paige.navic.ui.screens.album.viewmodels.AlbumListViewModel
 import paige.navic.ui.screens.genre.components.GenreDetailScreenContent
 import paige.navic.ui.screens.share.dialogs.ShareDialog
 import paige.navic.ui.screens.song.viewmodels.SongListViewModel
-import paige.navic.di.isLandscape
-import paige.navic.di.LocalBottomBarScrollManager
-import paige.navic.di.LocalPlatformContext
 import kotlin.time.Duration
 
 @Composable
 fun GenreDetailScreen(
 	genreName: String
 ) {
-	val platformContext = LocalPlatformContext.current
 	val preferenceManager = koinInject<PreferenceManager>()
 	val player = koinInject<MediaPlayerViewModel>()
 
@@ -80,9 +79,11 @@ fun GenreDetailScreen(
 	Scaffold(
 		topBar = { NestedTopBar({ Text(genreName) }) },
 		bottomBar = {
+			val sizeClass = LocalSizeClass.current
 			val scrollManager = LocalBottomBarScrollManager.current
-			val preferVisible = preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
-			if (!platformContext.isLandscape() && preferVisible) {
+			val preferVisible =
+				preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
+			if (sizeClass.widthSizeClass < WindowWidthSizeClass.Medium && preferVisible) {
 				RootBottomBar(scrolled = scrollManager.isTriggered)
 			}
 		}

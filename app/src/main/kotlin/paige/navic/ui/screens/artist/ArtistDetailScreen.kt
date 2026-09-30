@@ -41,6 +41,7 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -71,8 +72,7 @@ import paige.navic.R
 import paige.navic.data.database.entities.DownloadStatus
 import paige.navic.di.LocalBottomBarScrollManager
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.isLandscape
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.DownloadManager
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.manager.SnackBarManager
@@ -105,7 +105,6 @@ import kotlin.time.Duration
 fun ArtistDetailScreen(
 	artistId: String
 ) {
-	val platformContext = LocalPlatformContext.current
 	val preferenceManager = koinInject<PreferenceManager>()
 
 	val viewModel = koinViewModel<ArtistDetailViewModel>(
@@ -176,9 +175,11 @@ fun ArtistDetailScreen(
 				)
 			},
 			bottomBar = {
+				val sizeClass = LocalSizeClass.current
 				val scrollManager = LocalBottomBarScrollManager.current
-				val preferVisible = preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
-				if (!platformContext.isLandscape() && preferVisible) {
+				val preferVisible =
+					preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
+				if (sizeClass.widthSizeClass < WindowWidthSizeClass.Medium && preferVisible) {
 					RootBottomBar(scrolled = scrollManager.isTriggered)
 				}
 			}

@@ -29,7 +29,7 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import org.koin.compose.koinInject
 import paige.navic.R
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.ui.components.common.SegmentedListButton
 import paige.navic.ui.components.common.SegmentedListButtonDefaults
@@ -45,9 +45,9 @@ import paige.navic.ui.screens.settings.components.SettingsNavItem
 
 @Composable
 fun SettingsDeveloperScreen() {
-	val platformContext = LocalPlatformContext.current
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	val backStack = LocalNavStack.current
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
 	var exceptionConfirmationShown by rememberSaveable { mutableStateOf(false) }
 	val preferenceManager = koinInject<PreferenceManager>()
 

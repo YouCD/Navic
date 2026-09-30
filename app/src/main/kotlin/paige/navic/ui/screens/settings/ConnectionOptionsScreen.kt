@@ -29,7 +29,6 @@ import androidx.lifecycle.compose.dropUnlessResumed
 import org.koin.compose.koinInject
 import paige.navic.R
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.manager.SessionManager
 import paige.navic.ui.components.common.SegmentedListItemDefaults
@@ -44,7 +43,6 @@ import paige.navic.util.PROXY_URL_REGEX
 @Composable
 fun SettingsConnectionOptionsScreen() {
 	val backStack = LocalNavStack.current
-	val platformContext = LocalPlatformContext.current
 
 	val sessionManager = koinInject<SessionManager>()
 	val preferenceManager = koinInject<PreferenceManager>()

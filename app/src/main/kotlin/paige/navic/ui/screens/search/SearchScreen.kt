@@ -33,6 +33,7 @@ import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberSwipeToDismissBoxState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -55,8 +56,7 @@ import paige.navic.R
 import paige.navic.data.database.entities.DownloadStatus
 import paige.navic.di.LocalBottomBarScrollManager
 import paige.navic.di.LocalNavStack
-import paige.navic.di.LocalPlatformContext
-import paige.navic.di.isLandscape
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.models.DomainAlbum
 import paige.navic.domain.models.DomainAlbumListType
@@ -112,7 +112,6 @@ enum class SearchCategory(@StringRes val res: Int) {
 fun SearchScreen(
 	nested: Boolean
 ) {
-	val platformContext = LocalPlatformContext.current
 	val preferenceManager = koinInject<PreferenceManager>()
 
 	val viewModel = koinViewModel<SearchViewModel>(
@@ -184,9 +183,12 @@ fun SearchScreen(
 			}
 		},
 		bottomBar = {
+			val sizeClass = LocalSizeClass.current
 			val scrollManager = LocalBottomBarScrollManager.current
-			val preferVisible = preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
-			if (!nested || (!platformContext.isLandscape() && preferVisible)) {
+			val preferVisible =
+				preferenceManager.bottomBarVisibilityMode == BottomBarVisibilityMode.AllScreens
+			if (!nested
+				|| (sizeClass.widthSizeClass < WindowWidthSizeClass.Medium && preferVisible)) {
 				RootBottomBar(scrolled = scrollManager.isTriggered)
 			}
 		}

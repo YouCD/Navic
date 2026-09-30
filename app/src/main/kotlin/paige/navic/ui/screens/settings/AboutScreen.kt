@@ -6,6 +6,7 @@
 
 package paige.navic.ui.screens.settings
 
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -21,12 +22,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import org.koin.compose.koinInject
 import paige.navic.R
-import paige.navic.di.LocalPlatformContext
+import paige.navic.di.LocalSizeClass
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.generated.BuildInfo
 import paige.navic.ui.components.common.SegmentedListItem
@@ -45,8 +47,11 @@ fun SettingsAboutScreen() {
 
 	@Suppress("DEPRECATION")
 	val clipboard = LocalClipboardManager.current
-	val platformContext = LocalPlatformContext.current
-	val hideBack = platformContext.sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+
+	val context = LocalContext.current
+	val sizeClass = LocalSizeClass.current
+	val hideBack = sizeClass.widthSizeClass >= WindowWidthSizeClass.Medium
+
 	var linkToOpen by rememberSaveable { mutableStateOf<String?>(null) }
 
 	Scaffold(
@@ -70,13 +75,15 @@ fun SettingsAboutScreen() {
 		) {
 			SettingsGroup {
 				val text = buildString {
-					append(platformContext.name + "\n")
 					append(
 						stringResource(
 							R.string.info_app_version,
-							platformContext.appVersion
-						)
+							context.packageManager
+								.getPackageInfo(context.packageName, 0)
+								.versionName.toString()
+						) + "\n"
 					)
+					append("Android ${Build.VERSION.RELEASE} (SDK ${Build.VERSION.SDK_INT})")
 				}
 				SegmentedListItem(
 					onClick = { clipboard.setText(AnnotatedString(text)) },
