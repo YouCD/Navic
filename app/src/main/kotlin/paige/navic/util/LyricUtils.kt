@@ -6,7 +6,7 @@
 
 package paige.navic.util
 
-import paige.navic.domain.models.lyrics.LyricsWord
+import paige.navic.domain.model.lyrics.LyricsWord
 import kotlin.time.Duration
 
 fun List<LyricsWord>.calculateWordProgress(

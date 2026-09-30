@@ -6,8 +6,8 @@
 
 package paige.navic.util
 
-import paige.navic.domain.models.DomainReplayGain
-import paige.navic.domain.models.settings.ReplayGainMode
+import paige.navic.domain.model.DomainReplayGain
+import paige.navic.domain.model.settings.ReplayGainMode
 import kotlin.math.pow
 
 fun DomainReplayGain.effectiveGain(mode: ReplayGainMode = ReplayGainMode.Track): Float? {

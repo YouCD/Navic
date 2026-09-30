@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import paige.navic.domain.models.settings.EqualizerConfig
+import paige.navic.domain.model.settings.EqualizerConfig
 import paige.navic.util.Logger
 
 class EqualizerManager(

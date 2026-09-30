@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import paige.navic.R
-import paige.navic.domain.models.snackbars.PlayerEvent
+import paige.navic.domain.model.snackbars.PlayerEvent
 
 class SnackBarManager {
 	private val _events = MutableSharedFlow<PlayerEvent>()

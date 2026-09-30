@@ -9,10 +9,10 @@ package paige.navic.util
 import androidx.room3.RoomRawQuery
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import paige.navic.domain.models.DomainAlbum
-import paige.navic.domain.models.DomainAlbumListType
-import paige.navic.domain.models.DomainSong
-import paige.navic.domain.models.DomainSongListType
+import paige.navic.domain.model.DomainAlbum
+import paige.navic.domain.model.DomainAlbumListType
+import paige.navic.domain.model.DomainSong
+import paige.navic.domain.model.DomainSongListType
 
 // TODO: sort with sql instead
 fun ImmutableList<DomainSong>.sortedByListType(

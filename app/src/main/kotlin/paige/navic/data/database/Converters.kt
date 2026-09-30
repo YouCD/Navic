@@ -7,10 +7,10 @@
 package paige.navic.data.database
 
 import androidx.room3.ColumnTypeConverter
-import paige.navic.domain.models.DomainContributor
-import paige.navic.domain.models.DomainExplicitStatus
-import paige.navic.domain.models.DomainReplayGain
-import paige.navic.domain.models.DomainSongArtist
+import paige.navic.domain.model.DomainContributor
+import paige.navic.domain.model.DomainExplicitStatus
+import paige.navic.domain.model.DomainReplayGain
+import paige.navic.domain.model.DomainSongArtist
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Instant

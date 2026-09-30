@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
 import paige.navic.R
-import paige.navic.domain.models.settings.AppIconVariant
+import paige.navic.domain.model.settings.AppIconVariant
 
 class AppIconManager(
 	private val context: Context,

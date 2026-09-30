@@ -9,9 +9,9 @@ package paige.navic.ui.navigation
 import androidx.compose.runtime.Immutable
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
-import paige.navic.domain.models.DomainAlbumListType
-import paige.navic.domain.models.DomainArtistListType
-import paige.navic.domain.models.DomainSongListType
+import paige.navic.domain.model.DomainAlbumListType
+import paige.navic.domain.model.DomainArtistListType
+import paige.navic.domain.model.DomainSongListType
 
 @Immutable
 @Serializable

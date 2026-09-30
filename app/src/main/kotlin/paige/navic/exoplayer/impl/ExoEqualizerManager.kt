@@ -17,7 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import paige.navic.domain.manager.EqualizerManager
-import paige.navic.domain.models.settings.EqualizerMode
+import paige.navic.domain.model.settings.EqualizerMode
 import paige.navic.util.Logger
 
 @UnstableApi

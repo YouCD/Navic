@@ -12,9 +12,9 @@ import androidx.compose.ui.res.stringResource
 import com.materialkolor.PaletteStyle
 import com.materialkolor.dynamiccolor.ColorSpec
 import paige.navic.R
-import paige.navic.domain.models.DomainAlbumListType
-import paige.navic.domain.models.DomainSongListType
-import paige.navic.domain.models.lyrics.LyricsProvider
+import paige.navic.domain.model.DomainAlbumListType
+import paige.navic.domain.model.DomainSongListType
+import paige.navic.domain.model.lyrics.LyricsProvider
 import kotlin.math.max
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.hours

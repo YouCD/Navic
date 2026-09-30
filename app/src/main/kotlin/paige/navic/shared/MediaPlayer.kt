@@ -20,13 +20,13 @@ import kotlinx.coroutines.launch
 import paige.navic.domain.manager.ConnectivityManager
 import paige.navic.domain.manager.DownloadManager
 import paige.navic.domain.manager.PreferenceManager
-import paige.navic.domain.models.DomainExplicitStatus
-import paige.navic.domain.models.DomainRadio
-import paige.navic.domain.models.DomainSong
-import paige.navic.domain.models.DomainSongCollection
-import paige.navic.domain.models.settings.ExplicitContentPlayback
-import paige.navic.domain.repositories.PlayerStateRepository
-import paige.navic.domain.repositories.SongRepository
+import paige.navic.domain.model.DomainExplicitStatus
+import paige.navic.domain.model.DomainRadio
+import paige.navic.domain.model.DomainSong
+import paige.navic.domain.model.DomainSongCollection
+import paige.navic.domain.model.settings.ExplicitContentPlayback
+import paige.navic.domain.repository.PlayerStateRepository
+import paige.navic.domain.repository.SongRepository
 import paige.navic.ui.core.PlayerUiState
 import kotlin.time.Duration.Companion.seconds
 

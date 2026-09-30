@@ -11,8 +11,8 @@ import androidx.media3.common.audio.AudioProcessor
 import androidx.media3.common.audio.AudioProcessor.StreamMetadata
 import androidx.media3.common.audio.BaseAudioProcessor
 import androidx.media3.common.util.UnstableApi
-import paige.navic.domain.models.DomainReplayGain
-import paige.navic.domain.models.settings.ReplayGainMode
+import paige.navic.domain.model.DomainReplayGain
+import paige.navic.domain.model.settings.ReplayGainMode
 import paige.navic.util.decibelsToLinear
 import paige.navic.util.effectiveGain
 import java.nio.ByteBuffer

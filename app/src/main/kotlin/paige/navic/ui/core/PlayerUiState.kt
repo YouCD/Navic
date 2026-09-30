@@ -7,8 +7,8 @@
 package paige.navic.ui.core
 
 import kotlinx.serialization.Serializable
-import paige.navic.domain.models.DomainSong
-import paige.navic.domain.models.DomainSongCollection
+import paige.navic.domain.model.DomainSong
+import paige.navic.domain.model.DomainSongCollection
 
 @Serializable
 data class PlayerUiState(

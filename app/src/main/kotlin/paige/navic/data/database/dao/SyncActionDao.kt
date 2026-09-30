@@ -10,7 +10,7 @@ import androidx.room3.Dao
 import androidx.room3.Insert
 import androidx.room3.Query
 import androidx.room3.Transaction
-import paige.navic.data.database.entities.SyncActionEntity
+import paige.navic.data.database.entity.SyncActionEntity
 
 @Dao
 interface SyncActionDao {

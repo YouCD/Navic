@@ -18,16 +18,16 @@ import paige.navic.data.database.dao.PlaylistDao
 import paige.navic.data.database.dao.RadioDao
 import paige.navic.data.database.dao.SongDao
 import paige.navic.data.database.dao.SyncActionDao
-import paige.navic.data.database.entities.AlbumEntity
-import paige.navic.data.database.entities.ArtistEntity
-import paige.navic.data.database.entities.DownloadEntity
-import paige.navic.data.database.entities.GenreEntity
-import paige.navic.data.database.entities.LyricEntity
-import paige.navic.data.database.entities.PlaylistEntity
-import paige.navic.data.database.entities.PlaylistSongCrossRef
-import paige.navic.data.database.entities.RadioEntity
-import paige.navic.data.database.entities.SongEntity
-import paige.navic.data.database.entities.SyncActionEntity
+import paige.navic.data.database.entity.AlbumEntity
+import paige.navic.data.database.entity.ArtistEntity
+import paige.navic.data.database.entity.DownloadEntity
+import paige.navic.data.database.entity.GenreEntity
+import paige.navic.data.database.entity.LyricEntity
+import paige.navic.data.database.entity.PlaylistEntity
+import paige.navic.data.database.entity.PlaylistSongCrossRef
+import paige.navic.data.database.entity.RadioEntity
+import paige.navic.data.database.entity.SongEntity
+import paige.navic.data.database.entity.SyncActionEntity
 
 @Database(
 	version = 21,

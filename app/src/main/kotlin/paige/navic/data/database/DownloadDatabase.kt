@@ -9,7 +9,7 @@ package paige.navic.data.database
 import androidx.room3.Database
 import androidx.room3.RoomDatabase
 import paige.navic.data.database.dao.DownloadDao
-import paige.navic.data.database.entities.DownloadEntity
+import paige.navic.data.database.entity.DownloadEntity
 
 @Database(
 	version = 3,

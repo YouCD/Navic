@@ -12,8 +12,8 @@ import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
 import androidx.room3.Transaction
 import kotlinx.coroutines.flow.Flow
-import paige.navic.data.database.entities.GenreEntity
-import paige.navic.data.database.relations.GenreWithAlbums
+import paige.navic.data.database.entity.GenreEntity
+import paige.navic.data.database.relation.GenreWithAlbums
 import paige.navic.util.Logger
 
 @Dao

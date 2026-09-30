@@ -11,7 +11,7 @@ import androidx.room3.Insert
 import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
 import androidx.room3.Transaction
-import paige.navic.data.database.entities.LyricEntity
+import paige.navic.data.database.entity.LyricEntity
 
 @Dao
 interface LyricDao {

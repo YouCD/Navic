@@ -14,8 +14,8 @@ import androidx.room3.RawQuery
 import androidx.room3.RoomRawQuery
 import androidx.room3.Transaction
 import kotlinx.coroutines.flow.Flow
-import paige.navic.data.database.entities.AlbumEntity
-import paige.navic.data.database.relations.AlbumWithSongs
+import paige.navic.data.database.entity.AlbumEntity
+import paige.navic.data.database.relation.AlbumWithSongs
 import paige.navic.util.Logger
 
 @Dao

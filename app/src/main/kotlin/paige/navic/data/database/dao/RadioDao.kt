@@ -12,7 +12,7 @@ import androidx.room3.OnConflictStrategy
 import androidx.room3.Query
 import androidx.room3.Transaction
 import kotlinx.coroutines.flow.Flow
-import paige.navic.data.database.entities.RadioEntity
+import paige.navic.data.database.entity.RadioEntity
 import paige.navic.util.Logger
 
 @Dao
