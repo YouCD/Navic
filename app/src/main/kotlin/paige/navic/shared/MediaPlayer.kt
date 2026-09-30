@@ -14,8 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import paige.navic.domain.manager.ConnectivityManager
 import paige.navic.domain.manager.DownloadManager
@@ -122,15 +121,10 @@ abstract class MediaPlayerViewModel(
 	}
 
 	private suspend fun restoreState() {
-		val savedState = stateRepository.state
-			.filterNotNull()
-			.firstOrNull()
-			?.copy(isPaused = true, isLoading = false)
-		if (savedState != null) {
-			_uiState.value = savedState
-			syncPlayerWithState(savedState)
-			checkAndAutoFillQueue()
-		}
+		val savedState = stateRepository.state.first().copy(isPaused = true, isLoading = false)
+		_uiState.value = savedState
+		syncPlayerWithState(savedState)
+		checkAndAutoFillQueue()
 	}
 
 	@OptIn(FlowPreview::class)
