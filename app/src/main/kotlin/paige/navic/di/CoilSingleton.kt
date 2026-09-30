@@ -6,32 +6,39 @@
 
 package paige.navic.di
 
+import android.content.Context
 import coil3.ImageLoader
 import coil3.annotation.ExperimentalCoilApi
 import coil3.disk.DiskCache
+import coil3.disk.directory
+import coil3.memory.MemoryCache
 import coil3.network.ktor3.KtorNetworkFetcherFactory
 import coil3.request.crossfade
 import coil3.serviceLoaderEnabled
-import okio.FileSystem
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.util.createHttpClientWithPreferences
-import coil3.PlatformContext as CoilPlatformContext
-
 
 class CoilSingleton(
-	private val preferenceManager: PreferenceManager,
-	private val context: CoilPlatformContext
+	private val context: Context,
+	private val preferenceManager: PreferenceManager
 ) {
 	private var sharedDiskCache: DiskCache? = null
+	private var sharedMemoryCache: MemoryCache? = null
 
 	val coilImageLoader: ImageLoader by lazy { getImageLoader() }
 	val staticCoilImageLoader: ImageLoader by lazy { getStaticImageLoader() }
 
 	private fun getDiskCache(): DiskCache {
 		return sharedDiskCache ?: DiskCache.Builder()
-			.directory(FileSystem.SYSTEM_TEMPORARY_DIRECTORY / "image_cache")
+			.directory(context.cacheDir.resolve("image_cache"))
 			.maxSizeBytes(2L shl 30)
 			.build().also { sharedDiskCache = it }
+	}
+
+	private fun getMemoryCache(): MemoryCache {
+		return sharedMemoryCache ?: MemoryCache.Builder()
+			.maxSizePercent(context, 0.15)
+			.build().also { sharedMemoryCache = it }
 	}
 
 	@OptIn(ExperimentalCoilApi::class)
@@ -45,6 +52,7 @@ class CoilSingleton(
 				)
 			}
 			.diskCache { getDiskCache() }
+			.memoryCache { getMemoryCache() }
 			.crossfade(true)
 			.build()
 	}
@@ -66,8 +74,8 @@ class CoilSingleton(
 				)
 			}
 			.diskCache { getDiskCache() }
+			.memoryCache { getMemoryCache() }
 			.crossfade(true)
 			.build()
 	}
 }
-
