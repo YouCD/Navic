@@ -6,7 +6,6 @@
 
 package paige.navic.ui.screen.settings.dialog
 
-import androidx.compose.animation.core.snap
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -27,28 +25,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import ir.mahozad.multiplatform.wavyslider.material3.Track
-import ir.mahozad.multiplatform.wavyslider.material3.WaveAnimationSpecs
-import ir.mahozad.multiplatform.wavyslider.material3.WaveLength
-import ir.mahozad.multiplatform.wavyslider.material3.WavySlider
 import org.koin.compose.koinInject
 import paige.navic.R
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.model.settings.NowPlayingSliderStyle
 import paige.navic.ui.component.common.SlimSlider
+import paige.navic.ui.component.common.SpermSlider
+import paige.navic.ui.component.common.SpermSliderDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,7 +50,11 @@ fun NowPlayingSliderStyleDialog(
 ) {
 	if (!presented) return
 
-	var sliderValue by rememberSaveable { mutableFloatStateOf(0.6767f) }
+	val sliderState = rememberSliderState(value = 0.6767f)
+	val onValueChange: (Float) -> Unit = { value ->
+		sliderState.value = value
+	}
+
 	val preferenceManager = koinInject<PreferenceManager>()
 	val interactionSource = remember { MutableInteractionSource() }
 
@@ -87,54 +83,34 @@ fun NowPlayingSliderStyleDialog(
 							when (style) {
 								NowPlayingSliderStyle.Flat -> {
 									Slider(
-										value = sliderValue,
-										onValueChange = { sliderValue = it },
+										state = sliderState,
+										onValueChange = onValueChange,
 										interactionSource = interactionSource,
 										modifier = Modifier.requiredWidth(200.dp).scale(.5f)
 									)
 								}
 
-								NowPlayingSliderStyle.Squiggly -> {
-									WavySlider(
-										value = sliderValue,
-										onValueChange = { sliderValue = it },
-										interactionSource = interactionSource,
+								NowPlayingSliderStyle.Squiggly, NowPlayingSliderStyle.Yoyo -> {
+									val isYoyo = style == NowPlayingSliderStyle.Yoyo
+									SpermSlider(
+										state = sliderState,
+										onValueChange = onValueChange,
 										modifier = Modifier.requiredWidth(200.dp).scale(.5f),
-										track = { sliderState ->
-											SliderDefaults.Track(
-												sliderState = sliderState,
-												thumbTrackGapSize = 0.dp,
-												waveLength = SliderDefaults.WaveLength,
-												animationSpecs = SliderDefaults.WaveAnimationSpecs.copy(
-													waveAppearanceAnimationSpec = snap()
-												),
-											)
-										}
-									)
-								}
-
-								NowPlayingSliderStyle.Yoyo -> {
-									WavySlider(
-										value = sliderValue,
-										onValueChange = { sliderValue = it },
-										interactionSource = interactionSource,
-										modifier = Modifier.requiredWidth(200.dp).scale(.5f),
-										track = { sliderState ->
-											SliderDefaults.Track(
-												sliderState = sliderState,
-												thumbTrackGapSize = 0.dp,
-												waveLength = 24.dp,
-												animationSpecs = SliderDefaults.WaveAnimationSpecs.copy(
-													waveAppearanceAnimationSpec = snap()
-												),
-											)
-										},
 										thumb = {
 											SliderDefaults.Thumb(
-												interactionSource = interactionSource,
-												modifier = Modifier.clip(CircleShape),
-												enabled = true,
-												thumbSize = DpSize(16.dp, 16.dp)
+												thumbSize = if (isYoyo) DpSize(
+													20.dp,
+													20.dp
+												) else DpSize(4.dp, 32.dp),
+												interactionSource = remember { MutableInteractionSource() }
+											)
+										},
+										track = { sliderState ->
+											SpermSliderDefaults.Track(
+												sliderState = sliderState,
+												gapSize = if (isYoyo) 0.dp else 6.dp,
+												wavelength = if (isYoyo) 32.dp else 26.dp,
+												amplitude = { 1f }
 											)
 										}
 									)
@@ -142,8 +118,8 @@ fun NowPlayingSliderStyleDialog(
 
 								NowPlayingSliderStyle.Slim -> {
 									SlimSlider(
-										value = sliderValue,
-										onValueChange = { sliderValue = it },
+										state = sliderState,
+										onValueChange = onValueChange,
 										modifier = Modifier.requiredWidth(200.dp).scale(.5f)
 									)
 								}

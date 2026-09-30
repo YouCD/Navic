@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -32,7 +33,7 @@ import com.kyant.capsule.ContinuousCapsule
 
 @Composable
 fun SlimSlider(
-	value: Float,
+	state: SliderState,
 	onValueChange: (Float) -> Unit,
 	modifier: Modifier = Modifier,
 	enabled: Boolean = true
@@ -82,7 +83,7 @@ fun SlimSlider(
 			Box(
 				modifier = Modifier
 					.clip(ContinuousCapsule)
-					.fillMaxWidth(value)
+					.fillMaxWidth(state.coercedValueAsFraction)
 					.fillMaxHeight()
 					.background(MaterialTheme.colorScheme.primary)
 			)

@@ -6,31 +6,27 @@
 
 package paige.navic.ui.screen.nowPlaying.component.controls
 
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.snap
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import ir.mahozad.multiplatform.wavyslider.WaveDirection
-import ir.mahozad.multiplatform.wavyslider.WaveVelocity
-import ir.mahozad.multiplatform.wavyslider.material3.Track
-import ir.mahozad.multiplatform.wavyslider.material3.WaveAnimationSpecs
-import ir.mahozad.multiplatform.wavyslider.material3.WaveVelocity
-import ir.mahozad.multiplatform.wavyslider.material3.WavySlider
 import org.koin.compose.koinInject
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.model.settings.NowPlayingSliderStyle
 import paige.navic.shared.MediaPlayerViewModel
 import paige.navic.ui.component.common.SlimSlider
+import paige.navic.ui.component.common.SpermSlider
+import paige.navic.ui.component.common.SpermSliderDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,17 +35,21 @@ fun NowPlayingProgressBar() {
 	val player = koinInject<MediaPlayerViewModel>()
 	val playerState by player.uiState.collectAsState()
 	val enabled = playerState.currentSong != null
-	val waveHeight by animateDpAsState(
-		if (!playerState.isPaused)
-			6.dp
-		else 0.dp
-	)
+	val sliderState = rememberSliderState(value = playerState.progress)
+	val onValueChange: (Float) -> Unit = { value ->
+		sliderState.value = value
+		player.seek(value)
+	}
+
+	LaunchedEffect(playerState.progress, playerState.isPaused) {
+		sliderState.value = playerState.progress
+	}
 
 	when (preferenceManager.nowPlayingSliderStyle) {
 		NowPlayingSliderStyle.Flat -> {
 			Slider(
-				value = playerState.progress,
-				onValueChange = { player.seek(it) },
+				state = sliderState,
+				onValueChange = onValueChange,
 				modifier = Modifier.padding(horizontal = 16.dp),
 				enabled = enabled
 			)
@@ -57,34 +57,23 @@ fun NowPlayingProgressBar() {
 
 		NowPlayingSliderStyle.Squiggly, NowPlayingSliderStyle.Yoyo -> {
 			val isYoyo = preferenceManager.nowPlayingSliderStyle == NowPlayingSliderStyle.Yoyo
-			WavySlider(
-				value = playerState.progress,
-				onValueChange = { player.seek(it) },
-				modifier = Modifier.padding(
-					horizontal = if (isYoyo) 7.dp else 14.dp
-				),
-				waveHeight = waveHeight,
+			SpermSlider(
+				state = sliderState,
+				onValueChange = onValueChange,
+				modifier = Modifier.padding(horizontal = if (isYoyo) 7.dp else 14.dp),
 				thumb = {
 					SliderDefaults.Thumb(
 						enabled = playerState.currentSong != null,
-						thumbSize = if (isYoyo)
-							DpSize(20.dp, 20.dp)
-						else DpSize(4.dp, 32.dp),
+						thumbSize = if (isYoyo) DpSize(20.dp, 20.dp) else DpSize(4.dp, 32.dp),
 						interactionSource = remember { MutableInteractionSource() }
 					)
 				},
 				track = { sliderState ->
-					SliderDefaults.Track(
+					SpermSliderDefaults.Track(
 						sliderState = sliderState,
-						thumbTrackGapSize = if (isYoyo) 0.dp else 6.dp,
-						waveLength = if (isYoyo) 32.dp else 26.dp,
-						waveHeight = waveHeight,
-						animationSpecs = SliderDefaults.WaveAnimationSpecs.copy(
-							waveAppearanceAnimationSpec = snap()
-						),
-						waveVelocity = if (isYoyo)
-							WaveVelocity(14.dp, WaveDirection.TAIL)
-						else SliderDefaults.WaveVelocity
+						gapSize = if (isYoyo) 0.dp else 6.dp,
+						wavelength = if (isYoyo) 32.dp else 26.dp,
+						amplitude = { if (!playerState.isPaused) 1f else 0f }
 					)
 				},
 				enabled = enabled
@@ -93,8 +82,8 @@ fun NowPlayingProgressBar() {
 
 		NowPlayingSliderStyle.Slim -> {
 			SlimSlider(
-				value = playerState.progress,
-				onValueChange = { player.seek(it) },
+				state = sliderState,
+				onValueChange = onValueChange,
 				modifier = Modifier.padding(horizontal = 16.dp),
 				enabled = enabled
 			)
