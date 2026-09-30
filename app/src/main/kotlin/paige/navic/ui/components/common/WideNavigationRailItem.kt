@@ -1,3 +1,9 @@
+/*
+ * Navic, a Subsonic music streaming app for Android
+ * Copyright (c) 2026 paige
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
 // this is literally just to use ContinuousCapsule for indicator shape :trol:
 
 @file:Suppress("INVISIBLE_REFERENCE")

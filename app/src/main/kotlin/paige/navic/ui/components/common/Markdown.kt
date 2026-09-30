@@ -1,3 +1,9 @@
+/*
+ * Navic, a Subsonic music streaming app for Android
+ * Copyright (c) 2026 paige
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
 // very limited Markdown parser
 // since this is literally just used once I didn't want to add another dependency
 
