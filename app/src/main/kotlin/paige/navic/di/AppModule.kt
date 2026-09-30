@@ -15,11 +15,7 @@ import paige.navic.ui.navigation.PersistentViewModelStoreOwner
 val appModule = module {
 	single { Settings() }
 	singleOf(::CoilSingleton)
-	single {
-		get<CoilSingleton>().coilImageLoader
-	}
-	single(named("static")) {
-		get<CoilSingleton>().staticCoilImageLoader
-	}
+	single { get<CoilSingleton>().coilImageLoader }
+	single(named("static")) { get<CoilSingleton>().staticCoilImageLoader }
 	singleOf(::PersistentViewModelStoreOwner)
 }

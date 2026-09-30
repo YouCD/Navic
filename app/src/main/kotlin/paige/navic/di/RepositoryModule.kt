@@ -24,14 +24,14 @@ import paige.navic.domain.repository.SongRepository
 val repositoryModule = module {
 	singleOf(::AlbumRepository)
 	singleOf(::ArtistRepository)
+	singleOf(::CollectionRepository)
 	singleOf(::DbRepository)
 	singleOf(::GenreRepository)
 	singleOf(::LyricsRepository)
+	singleOf(::PlayerStateRepository)
+	singleOf(::PlaylistRepository)
+	singleOf(::RadioRepository)
 	singleOf(::SearchRepository)
 	singleOf(::ShareRepository)
-	singleOf(::CollectionRepository)
-	singleOf(::PlaylistRepository)
 	singleOf(::SongRepository)
-	singleOf(::RadioRepository)
-	singleOf(::PlayerStateRepository)
 }

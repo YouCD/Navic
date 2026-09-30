@@ -33,26 +33,26 @@ import paige.navic.data.database.entity.SyncActionEntity
 	version = 21,
 	entities = [
 		AlbumEntity::class,
+		ArtistEntity::class,
+		DownloadEntity::class,
 		GenreEntity::class,
+		LyricEntity::class,
 		PlaylistEntity::class,
 		PlaylistSongCrossRef::class,
-		SongEntity::class,
-		ArtistEntity::class,
 		RadioEntity::class,
-		LyricEntity::class,
-		SyncActionEntity::class,
-		DownloadEntity::class
+		SongEntity::class,
+		SyncActionEntity::class
 	]
 )
 @ColumnTypeConverters(Converters::class)
 abstract class CacheDatabase : RoomDatabase() {
 	abstract fun albumDao(): AlbumDao
-	abstract fun genreDao(): GenreDao
-	abstract fun downloadDao(): DownloadDao
-	abstract fun playlistDao(): PlaylistDao
-	abstract fun songDao(): SongDao
 	abstract fun artistDao(): ArtistDao
-	abstract fun radioDao(): RadioDao
+	abstract fun downloadDao(): DownloadDao
+	abstract fun genreDao(): GenreDao
 	abstract fun lyricDao(): LyricDao
+	abstract fun playlistDao(): PlaylistDao
+	abstract fun radioDao(): RadioDao
+	abstract fun songDao(): SongDao
 	abstract fun syncActionDao(): SyncActionDao
 }
