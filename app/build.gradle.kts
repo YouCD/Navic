@@ -212,30 +212,60 @@ room3 {
 }
 
 dependencies {
-	coreLibraryDesugaring(libs.desugar.jdk.libs)
-	implementation(libs.bundles.compose)
-	implementation(libs.bundles.ktor)
-	implementation(libs.bundles.cmpThirdParty)
-	implementation(libs.bundles.androidx.lifecycle)
-	implementation(libs.bundles.androidx.android)
-	implementation(libs.bundles.room)
-	implementation(libs.bundles.koin)
+	// Compose
+	implementation(libs.compose.runtime)
+	implementation(libs.compose.foundation)
+	implementation(libs.compose.ui)
+	implementation(libs.compose.material3)
+	implementation(libs.compose.material3.adaptive.nav)
+	implementation(libs.compose.material3.windowSize)
 
+	// Androidx
+	implementation(libs.androidx.activity.compose)
+	implementation(libs.androidx.lifecycle.viewmodel)
+	implementation(libs.androidx.lifecycle.runtime)
+	implementation(libs.androidx.datastore.preferences)
+	implementation(libs.androidx.animation.graphics)
+	implementation(libs.androidx.sqlite.bundled)
+	implementation(libs.androidx.room3.runtime)
 	implementation(libs.androidx.navigation3.ui)
+	implementation(libs.androidx.media3.exoplayer)
+	implementation(libs.androidx.media3.session)
+	implementation(libs.androidx.media3.ktor)
+	implementation(libs.androidx.media3.decoder.ffmpeg)
+	implementation(libs.androidx.annotation)
+	implementation(libs.androidx.glance.appwidget)
+	implementation(libs.androidx.glance.material3)
+	implementation(libs.androidx.browser)
+
+	// Kotlinx
 	implementation(libs.kotlinx.datetime)
 	implementation(libs.kotlinx.serialization.json)
 	implementation(libs.kotlinx.collections.immutable)
-	implementation(libs.androidx.datastore.preferences)
+
+	// Networking
+	implementation(libs.ktor.client.core)
+	implementation(libs.ktor.client.okhttp)
+	implementation(libs.ktor.client.contentNegotiation)
+	implementation(libs.ktor.serialization.json)
+	implementation(libs.coil.compose)
+	implementation(libs.coil.network.ktor3)
 	implementation(libs.coil.gif)
 
-	implementation(libs.subsonicKotlin)
-	implementation(libs.koin.android)
-	implementation(libs.koin.core)
-	implementation(libs.bundles.glance)
-	implementation(libs.bundles.coil)
-	implementation(libs.bundles.media3)
-	implementation(libs.bundles.ktor.android)
-	implementation(libs.androidx.media3.decoder.ffmpeg)
+	// Compose 3rd party
+	implementation(libs.capsule)
+	implementation(libs.kmpalette.core)
+	implementation(libs.kmpalette.network)
+	implementation(libs.materialKolor)
+	implementation(libs.composePipette)
+	implementation(libs.multiplatformSettings)
 
+	// Misc
+	implementation(libs.koin.core)
+	implementation(libs.koin.android)
+	implementation(libs.koin.compose)
+	implementation(libs.koin.compose.viewmodel)
+	implementation(libs.subsonicKotlin)
 	ksp(libs.androidx.room3.compiler)
+	coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
