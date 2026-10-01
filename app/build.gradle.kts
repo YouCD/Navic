@@ -105,6 +105,7 @@ val fdroid = System.getenv("FDROID") == "true" || providers.gradleProperty("fdro
 android {
 	namespace = "paige.navic"
 	compileSdk = libs.versions.android.compileSdk.get().toInt()
+	compileSdkMinor = libs.versions.android.compileSdkMinor.get().toInt()
 
 	buildFeatures {
 		resValues = true
@@ -136,9 +137,8 @@ android {
 	}
 
 	buildTypes {
-		getByName("release") {
+		release {
 			isMinifyEnabled = true
-			isDebuggable = false
 			isProfileable = false
 			isJniDebuggable = false
 			isShrinkResources = true
@@ -149,7 +149,7 @@ android {
 			)
 		}
 
-		getByName("debug") {
+		debug {
 			applicationIdSuffix = ".debug"
 			resValue("string", "app_name", "Navic (Dev)")
 		}
