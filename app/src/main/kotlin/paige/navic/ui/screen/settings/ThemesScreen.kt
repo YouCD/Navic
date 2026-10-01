@@ -67,8 +67,8 @@ import paige.navic.R
 import paige.navic.domain.manager.PreferenceManager
 import paige.navic.domain.model.settings.Theme
 import paige.navic.domain.model.settings.ThemeMode
-import paige.navic.icons.Icons
-import paige.navic.icons.outlined.Picker
+import paige.navic.ui.icons.Icons
+import paige.navic.ui.icons.outlined.Picker
 import paige.navic.ui.component.common.SegmentedListItem
 import paige.navic.ui.component.common.SegmentedListItemDefaults
 import paige.navic.ui.component.common.TooltipBox

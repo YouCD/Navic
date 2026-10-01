@@ -93,6 +93,5 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version = "2
 android-application = { id = "com.android.application", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-valkyrie = { id = "io.github.composegears.valkyrie", version = "0.5.2" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.9" }
 androidx-room3 = { id = "androidx.room3", version.ref = "androidx-room3" }

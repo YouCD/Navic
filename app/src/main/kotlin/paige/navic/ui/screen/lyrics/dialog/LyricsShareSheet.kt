@@ -82,11 +82,11 @@ import paige.navic.di.LocalSnackBarState
 import paige.navic.domain.manager.SessionManager
 import paige.navic.domain.manager.ShareManager
 import paige.navic.domain.model.DomainSong
-import paige.navic.icons.Icons
-import paige.navic.icons.brand.Navic
-import paige.navic.icons.outlined.Check
-import paige.navic.icons.outlined.Picker
-import paige.navic.icons.outlined.Share
+import paige.navic.ui.icons.Icons
+import paige.navic.ui.icons.brand.Navic
+import paige.navic.ui.icons.outlined.Check
+import paige.navic.ui.icons.outlined.Picker
+import paige.navic.ui.icons.outlined.Share
 import paige.navic.ui.theme.blue
 import paige.navic.ui.theme.pink
 import paige.navic.ui.theme.positive

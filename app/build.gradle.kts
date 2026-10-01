@@ -12,7 +12,6 @@ plugins {
 	alias(libs.plugins.android.application)
 	alias(libs.plugins.compose.compiler)
 	alias(libs.plugins.kotlin.serialization)
-	alias(libs.plugins.valkyrie)
 	alias(libs.plugins.ksp)
 	alias(libs.plugins.androidx.room3)
 }
@@ -23,32 +22,6 @@ configurations.all {
 	exclude(group = "androidx.compose.material", module = "material")
 	// cache SNAPSHOT dependencies for less time, default 24h
 	resolutionStrategy.cacheChangingModulesFor(1, "hours")
-}
-
-valkyrie {
-	packageName = "paige.navic.icons"
-	generateAtSync = true
-	outputDirectory = layout.buildDirectory.dir("generated/sources/valkyrie")
-
-	iconPack {
-		name = "Icons"
-		targetSourceSet = "main"
-
-		nested {
-			name = "Brand"
-			sourceFolder = "brand"
-		}
-
-		nested {
-			name = "Outlined"
-			sourceFolder = "outlined"
-		}
-
-		nested {
-			name = "Filled"
-			sourceFolder = "filled"
-		}
-	}
 }
 
 val generateBuildInfo = tasks.register("generateBuildInfo", Sync::class) {
@@ -78,13 +51,11 @@ val generateBuildInfo = tasks.register("generateBuildInfo", Sync::class) {
 }
 
 tasks.withType<KotlinCompilationTask<*>>().configureEach {
-	dependsOn("generateValkyrieImageVector")
 	dependsOn(generateBuildInfo)
 }
 
-// no idea why ksp tasks depend on these
+// no idea why ksp tasks depend on this
 tasks.withType<KspAATask>().configureEach {
-	dependsOn("generateValkyrieImageVector")
 	dependsOn(generateBuildInfo)
 }
 
