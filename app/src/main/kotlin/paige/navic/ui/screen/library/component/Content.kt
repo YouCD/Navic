@@ -55,6 +55,7 @@ fun LibraryScreenContent(
 	scrollBehavior: TopAppBarScrollBehavior,
 	innerPadding: PaddingValues,
 	onSetShareId: (String) -> Unit,
+	onShuffleAll: () -> Unit,
 
 	// albums
 	albumsState: LazyPagingItems<DomainAlbum>,
@@ -102,6 +103,7 @@ fun LibraryScreenContent(
 		horizontalArrangement = Arrangement.spacedBy(5.dp),
 		state = state
 	) {
+		// Row 1: Newest, Random
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.LibraryAdd,
 			label = R.string.option_sort_newest,
@@ -114,6 +116,7 @@ fun LibraryScreenContent(
 			destination = Screen.AlbumList(true, DomainAlbumListType.Random),
 			start = false
 		)
+		// Row 2: Starred, Frequent
 		libraryScreenOverviewButton(
 			icon = Icons.Outlined.Star,
 			label = R.string.option_sort_starred,
@@ -125,6 +128,13 @@ fun LibraryScreenContent(
 			label = R.string.option_sort_frequent,
 			destination = Screen.AlbumList(true, DomainAlbumListType.Frequent),
 			start = false
+		)
+		// Row 3: Shuffle All
+		libraryScreenActionButton(
+			icon = Icons.Outlined.Shuffle,
+			label = R.string.action_shuffle_all,
+			onClick = onShuffleAll,
+			start = true
 		)
 
 		horizontalSection(

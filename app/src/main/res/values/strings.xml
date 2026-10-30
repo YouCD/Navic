@@ -367,6 +367,7 @@
 	<string name="action_pause">Pause</string>
 	<string name="action_new">New</string>
 	<string name="action_shuffle">Shuffle</string>
+	<string name="action_shuffle_all">Shuffle All</string>
 	<string name="action_delete">Delete</string>
 	<string name="action_edit">Edit</string>
 	<string name="action_cancel">Cancel</string>

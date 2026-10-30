@@ -43,6 +43,7 @@ import paige.navic.ui.component.snackbar.ErrorSnackBar
 import paige.navic.ui.core.LoginUiState
 import paige.navic.ui.core.UiState
 import paige.navic.ui.navigation.PersistentViewModelStoreOwner
+import kotlinx.coroutines.launch
 import paige.navic.ui.screen.album.viewmodel.AlbumListViewModel
 import paige.navic.ui.screen.artist.viewmodel.ArtistListViewModel
 import paige.navic.ui.screen.genre.viewmodel.GenreListViewModel
@@ -149,6 +150,7 @@ fun LibraryScreen() {
 				scrollBehavior = scrollBehavior,
 				innerPadding = innerPadding,
 				onSetShareId = { shareId = it },
+				onShuffleAll = { player.shuffleAllSongs() },
 
 				albumsState = albumsLazyItems,
 				selectedAlbum = albumsState.data?.selected,

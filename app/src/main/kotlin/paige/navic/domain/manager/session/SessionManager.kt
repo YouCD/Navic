@@ -14,9 +14,12 @@ import dev.zt64.subsonic.api.model.SubsonicException
 import dev.zt64.subsonic.api.model.User
 import dev.zt64.subsonic.client.SubsonicAuth
 import dev.zt64.subsonic.client.SubsonicClient
+import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.UserAgent
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.header
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.isSuccess
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -148,6 +151,19 @@ class SessionManager(
 			if (customHeaders.isNotEmpty()) {
 				defaultRequest {
 					customHeaders.forEach { (key, value) -> header(key, value) }
+				}
+			}
+
+			HttpResponseValidator {
+				validateResponse { response ->
+					if (!response.status.isSuccess()) {
+						val statusCode = response.status.value
+						val body = try { response.bodyAsText() } catch (_: Exception) { "" }
+						throw io.ktor.client.plugins.ResponseException(
+							response,
+							"HTTP $statusCode: ${response.status.description}${if (body.isNotEmpty()) "\n$body" else ""}"
+						)
+					}
 				}
 			}
 		},

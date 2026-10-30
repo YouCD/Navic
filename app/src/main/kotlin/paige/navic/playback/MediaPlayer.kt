@@ -1031,6 +1031,37 @@ class MediaPlayer(
 		}
 	}
 
+	fun shuffleAllSongs() = this@MediaPlayer.launch {
+		val songs = songRepository.getAllSongs()
+		if (songs.isEmpty()) {
+			clearQueue()
+			return@launch
+		}
+
+		val items = withContext(Dispatchers.Default) { songs.map { it.toMediaItem() } }
+		val order = songs.indices.shuffled()
+		val startIndex = order.first()
+
+		_uiState.update {
+			it.copy(
+				queue = songs,
+				shuffleOrder = order,
+				currentIndex = startIndex,
+				currentSong = songs[startIndex],
+				isShuffleEnabled = true,
+				progress = 0f
+			)
+		}
+
+		controller?.let { player ->
+			player.setMediaItems(items, startIndex, 0L)
+			pushShuffleOrder(order)
+			player.shuffleModeEnabled = true
+			player.prepare()
+			player.play()
+		}
+	}
+
 	fun pause() = launch(Dispatchers.Main.immediate) {
 		controller?.pause()
 	}
